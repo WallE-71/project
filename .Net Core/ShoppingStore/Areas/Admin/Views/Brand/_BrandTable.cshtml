@@ -1,0 +1,150 @@
+﻿@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<div id="toolbar">
+    <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-url="@Url.Action("RenderBrand","Brand")">
+        <i class="fa fa-plus"></i> | افزودن برند جدید
+    </button>
+    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('Brand', getIdSelections())" disabled>
+        <i class="fa fa-trash"></i> | حذف گروهی
+    </button>
+</div>
+
+<table id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-fullscreen="true"
+       data-show-columns="true"
+       data-detail-view="true"
+       data-show-export="true"
+       data-click-to-select="false"
+       data-detail-formatter="detailFormatter"
+       data-minimum-count-columns="2"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-id-field="id"
+       data-page-list="[10, 25, 50, 100, all]"
+       data-show-footer="true"
+       data-side-pagination="server"
+       data-url="/Admin/Brand/GetBrands"
+       data-response-handler="responseHandler">
+</table>
+
+<script>
+    var $table = $('#table');
+    var $remove = $('#remove');
+    var selections = []
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.Id;
+        });
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "ردیف" && key != "insertTime" && key != "description" && key != "isComplete" && key != "products" && key != "persianInsertTime") {
+                if (key == 'name') key = 'برند';
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Brand", "RenderBrand")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-success" data-toggle="ajax-modal" data-url=@Url.Action("RenderBrand", "Brand")?brandId=' + row.Id + ' title="ویرایش"><i class="fa fa-edit"></i></button >';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Brand", "Delete")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Brand")/?brandId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button >';
+        }
+        return access;
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 600,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    title: 'ردیف',
+                    field: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                }, {
+                    title: 'جزئیات اطلاعات برند ها',
+                    colspan: 3,
+                    align: 'center'
+                }],
+                [{
+                    field: 'name',
+                    title: 'برند',
+                    sortable: true,
+                    footerFormatter: totalNameFormatter,
+                },{
+                    field: 'description',
+                    title: 'تعداد محصول دارای این برند',
+                    sortable: false,
+                    width: 1,
+                    align: 'center'
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    events: window.operateEvents,
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+        })
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+</script>

@@ -1,0 +1,268 @@
+﻿@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<link href="~/assets/css/style.css" rel="stylesheet" asp-append-version="true" />
+
+<div id="toolbar">
+    <a class="btn btn-success text-white" asp-action="CreateOrUpdate">
+        <i class="fa fa-plus"></i> | افزودن اسلایدر جدید
+    </a>
+    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('Slider', getIdSelections())" disabled>
+        <i class="fa fa-trash"></i> | حذف گروهی
+    </button>
+</div>
+
+<table id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-fullscreen="true"
+       data-show-columns="true"
+       data-detail-view="true"
+       data-show-export="true"
+       data-click-to-select="false"
+       data-detail-formatter="detailFormatter"
+       data-minimum-count-columns="2"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-id-field="id"
+       data-page-list="[10, 25, 50, 100, all]"
+       data-show-footer="true"
+       data-side-pagination="server"
+       data-url="/Admin/Slider/GetSliders"
+       data-response-handler="responseHandler">
+</table>
+
+<script>
+    var $table = $('#table');
+    var $remove = $('#remove');
+    var selections = []
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.Id;
+        });
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "ردیف" && key != "fileStores" && key != "descriptionsSlider" && key != "isComplete" && key != "imageFile" && key != "imageFiles" && key != "imageAdFile" && key != "updateTime" && key != "insertTime" && key != "name" && key != "removeTime" && key != "url") {
+                if (key == 'title') {
+                    key = 'عنوان اسلایدر 1';
+                    if (value == null)
+                        value = '';
+                    else
+                        key = '<span style="font-weight: bold;">' + key + '</span>';
+                }
+                if (key == 'description') {
+                    key = 'توضیحات اسلایدر 1';
+                    if (value == null)
+                        value = '';
+                    else
+                        key = '<span style="font-weight: bold;">' + key + '</span>';
+                }
+                if (key == 'persianInsertTime') {
+                    key = 'تاریخ درج اسلایدر';
+                    if (value == null)
+                        value = '';
+                }
+                if (key == 'imageLocation') {
+                    key = 'مکان اسلایدر';
+                    if (value != 0) {
+                        if (value == 1)
+                            value = 'بالای صفحه';
+                        if (value == 2)
+                            value = 'وسط صفحه';
+                        if (value == 3)
+                            value = 'پایین صفحه';
+                    }
+                    else
+                        value = '';
+                }
+                if (key == 'typeOfSlider') {
+                    key = 'نوع اسلایدر';
+                    if (value != 0) {
+                        if (value == 1)
+                            value = 'اسلایدر ثابت';
+                        if (value == 2)
+                            value = 'اسلایدر متحرک بدون کنترل';
+                        if (value == 3)
+                            value = 'تبلیغات';
+                    }
+                    else
+                        value = 'اسلایدری انتخاب نشده است';
+                }
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+            if (key == 'url') {
+                key = 'آدرس اسلایدر';
+                html.push('<p><b style="float:right">' + key + ':</b> ' + '<a href="' + value + '" style="float:right;direction:ltr;margin-right:2px;">' + value + '</a>' + '</p><br/><br/>')
+            }
+            if (key == "imageFile") {
+                key = 'تصویر اسلایدر';
+                if (value != null) {
+                    var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/slider/' + value;
+                    html.push('<p><b>' + key + ':</b>',
+                        '<a href="javascript:void(0);" data-toggle="modal" data-target="#imageModal">',
+                            '<img src="' + url + '" height="200" />',
+                        '</a>',
+                        '<div id="imageModal" class="modal fade" role="dialog">',
+                            '<div class="modal-dialog  modal-lg">',
+                                '<div class="modal-content">',
+                                    '<div class="modal-header">',
+                                        '<h4 class="modal-title" id="myModalLabel">' + row.imageFile + '</h4 >',
+                                        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>',
+                                    '</div>',
+                                        '<div class="modal-body">',
+                                            '<img id="modalImage" src="' + url + '" style="width:100%;height:100%;max-width:900px;max-height:500px;"/>',
+                                        '</div>',
+                                    '<div class="modal-footer">',
+                                        '<input type="button" class="btn btn-sm btn-light" style="color:red;" value="بزرگنمایی" onclick="findImage()"/>',
+                                        '<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>',
+                                    '</div>',
+                                '</div>',
+                            '</div>',
+                        '</div>',
+                    '</p> ');
+                    value = '';
+                }
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Slider", "CreateOrUpdate")' == 'True') {
+            access = access + '<a class="text-success" href="/Admin/Slider/CreateOrUpdate?sliderId=' + row.Id + '" title="ویرایش"><i class="fa fa-edit"></i></a>';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Slider", "Delete")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Slider")/?sliderId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button >';
+        }
+        return access;
+    }
+
+    function imageFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key == "imageFile" && value != null) {
+                var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/slider/' + value;
+                html.push('<p><img src="' + url + '" height="200" width="400" title="اسلایدر" /></p>')
+            }
+            else if (key == "imageFiles" && value != null) {
+                var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/slider/';
+                var cssUrl = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/assets/css/style.css';
+                var i;
+                for (i = 0; i < value.length; i++){
+                    html.push(
+                        '<link href="'+cssUrl+'" rel="stylesheet"/>',
+                        '<div id="carousel-fade" class="carousel carousel-fade" data-ride="carousel" data-interval="10000" style="width: 400px; max-height: 200px;">',
+                        '<div class="carousel-inner embed-responsive embed-responsive-16by9" role="listbox">',
+                        '<div class="carousel-item embed-responsive-item active" style="max-height: 200px; transition: opacity .4s ease-in-out;">',
+                        '<img src="' + url + value[i] + '" title="اسلایدر" style="object-fit: cover; width: 100%; height: 100%;" class="img-fluid">',
+                        '</div>',
+                        '</div>',
+                        '</div>')
+                }
+            }
+        })
+        return html.join('')
+    }
+
+    function locationFormatter(value, row, index) {
+        var location = "بالای صفحه";
+        if (row.imageLocation == 2)
+            location = "وسط صفحه";
+        if (row.imageLocation == 3)
+            location = "پایین صفحه";
+        return [
+            '<span>' + location + '</span>'
+        ].join('')
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 900,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    field: 'ردیف',
+                    title: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                }, {
+                    title: 'جزئیات اطلاعات اسلایدرها',
+                    colspan: 3,
+                    align: 'center'
+                }],
+                [{
+                    field: '',
+                    title: 'تصویر',
+                    sortable: false,
+                    align: 'center',
+                    formatter: imageFormatter,
+                },{
+                    field: 'imageLocation',
+                    title: 'محل قرارگیری اسلایدر',
+                    sortable: true,
+                    align: 'center',
+                    formatter: locationFormatter,
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    events: window.operateEvents,
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+            })
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+</script>

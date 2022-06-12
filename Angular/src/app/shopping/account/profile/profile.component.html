@@ -1,0 +1,88 @@
+<section class="cart-home">
+    <div class="post-item-cart d-block order-2">
+        <div class="content-page">
+            <div class="cart-collaterals" style="min-height: 500px;">
+                <div class="totals d-block">
+                    <div class="row" style="min-width: 700px;">
+                        <div class="col-md-3 col-sm-4" id="nav-items-profile">
+                            <h3 id="profile-header">
+                                پروفایل
+                            </h3>
+                            <ul class="nav nav-pills nav-pills-success nav-stacked">
+                                <li><a class="link active" data-toggle="pill" href="#about">حساب کاربری</a></li>
+                                <li><a class="link" data-toggle="pill" href="#credit">افزایش اعتبار</a></li>
+                                <li><a class="link" routerLink="/order" routerLinkActive="active">لیست سفارشات</a></li>
+                                <li><a class="link" (click)="securityService.SignOut()"
+                                        routerLink="/">خروج</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-9 col-sm-4">
+                            <div class="tab-content">
+                                <div id="about" style="margin-top: 90px;" class="tab-pane fade show active">
+                                    <div class="card card-signup">
+                                        <form class="form" (submit)="Edit()" [formGroup]="form">
+                                            <div class="content" style="background-color:white !important; ">
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2">
+                                                        <i class="fa fa-phone"></i>شماره همراه
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-3"
+                                                        placeholder="{{phoneNumber}}"
+                                                        style="border-radius: 10px; text-align: center;" disabled />
+
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 70px;">
+                                                        <i class="fa fa-envelope"></i>پست الکترونیک
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-4" 
+                                                        placeholder="{{email}}" formControlName="email"
+                                                        style="border-radius: 10px; padding-right: 7px" />
+                                                </div>
+                                                <br />
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2">
+                                                        <i class="fa fa-user-circle"></i>نام
+                                                    </span>
+                                                    <input type="text" matInput class="form-control col-md-3"
+                                                        placeholder="{{firstName}}" formControlName="firstName"
+                                                        style="border-radius: 10px; border: 1px #ced4da solid;padding-right: 7px;" />
+
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 70px;">
+                                                        <i class="fa fa-user-circle-o"></i>نام خانوادگی
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-4"
+                                                        placeholder="{{lastName}}" formControlName="lastName" 
+                                                        style="border-radius: 10px; padding-right: 7px" />
+                                                </div>
+                                                <br />
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2">
+                                                        <i class="fa fa-envelope"></i>آدرس
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-6" 
+                                                        placeholder="{{address}}" formControlName="address"
+                                                        style="border-radius: 10px; padding-right: 7px" />
+                                                </div>
+                                                <div class="footer">
+                                                    <button mat-flat-button
+                                                        class="btn btn-simple btn-success btn-lg text-blue"
+                                                        style="float: left; padding: 4px 15px;font-size: 13px;">
+                                                        ویرایش اطلاعات
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div id="credit" class="tab-pane fade">
+                                    <app-credit></app-credit>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

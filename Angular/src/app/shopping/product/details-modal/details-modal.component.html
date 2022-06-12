@@ -1,0 +1,79 @@
+<mat-dialog-content class="mat-typography">
+    <section class="cart-home">
+        <div class="post-item-cart d-block order-2">
+            <div class="content-page">
+                <div class="cart-collaterals">
+                    <div class="totals d-block">
+                        <div class="container">
+                            <div class="grid product">
+                                <div class="column-xs-12 column-md-7">
+                                    <div class="product-gallery">
+                                        <div class="product-image">
+                                            <img #active_image class="active" (click)="goDetails(product.Id)"
+                                                src="../assets/images/product/{{product.imageName}}" />
+                                        </div>
+                                        <span>
+                                            <a style="margin: 0 5px;" class="numberOfComment"><i class="fa fa-comments-o"
+                                                    aria-hidden="true"></i> {{product.numberOfComments}} </a>
+                                            <a style="cursor: pointer;" (click)="Bookmark()" id="bookmark">
+                                                <i #bookmark style="margin-right: 5px;"
+                                                    class="fa {{product?.IsBookmarked?'fa-bookmark':'fa-bookmark-o'}}"
+                                                    aria-hidden='true'></i>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="column-xs-12 column-md-5">
+                                    <p class="info-header">
+                                        اطلاعات محصول</p>
+                                    <h6>{{product.name}}</h6>
+                                    <p>
+                                        <span *ngIf="product.actionDiscount == 0">
+                                            <ins><span>{{product.price}}<span> ریال
+                                                    </span></span></ins>
+                                        </span>
+                                        <span *ngIf="product.actionDiscount != 0">
+                                            <del><span>{{product.price}}<span>
+                                                    </span></span></del> |  
+                                            <ins><span>  {{product.actionDiscount}} <small>ریال</small><span> 
+                                                    </span></span></ins> | 
+                                        </span>
+                                        <span>{{product.nameOfBrand}}</span>
+                                     </p>
+                                    <div class="description">
+                                        <p>{{product.shortName}}</p>
+                                    </div>
+                                    <button class="add-to-cart" (click)="AddToCart(product.Id)">
+                                        افزودن به سبد خرید
+                                    </button>
+                                    <br /><br />
+                                </div>
+                            </div>
+    
+                            <div class="row">
+                                <h5 class="header">
+                                    محصولات مرتبط
+                                </h5>
+                                <div class="grid related-products">
+                                    <div *ngFor="let item of productsRelated" class="column-md-3">
+                                        <img (click)="goDetails(item.Id)"
+                                            src="../assets/images/product/{{item?.imageName}}">
+                                        <h4>{{item?.name}}</h4>
+                                        <p class="price">{{item?.price}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End container -->
+                        <!-- This template has been downloaded from Webrubik.com -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>بستن</button>
+    <button mat-button [mat-dialog-close]="true" cdkFocusInitial (click)="goDetails(product.Id)">جزئیات محصول</button>
+</mat-dialog-actions>

@@ -1,0 +1,600 @@
+﻿@model ShoppingStore.Application.ViewModels.Slider.SliderViewModel
+@using ShoppingStore.Domain.Entities
+@{
+    ViewData["Title"] = "CreateOrUpdate";
+    Layout = "../Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/assets/css/style.css" rel="stylesheet" asp-append-version="true" />
+
+<link href="~/sliders/2/sliderengine/amazingslider-2.css" rel="stylesheet" type="text/css" />
+<script src="~/sliders/2/sliderengine/initslider-2.js" type="text/javascript"></script>
+<link href="~/sliders/1/sliderengine/amazingslider-1.css" rel="stylesheet" type="text/css" />
+<script src="~/sliders/1/sliderengine/initslider-1.js" type="text/javascript"></script>
+<script src="~/sliders/1/sliderengine/amazingslider.js" type="text/javascript"></script>
+
+<link href="~/CacheFiles/lib/croppie/croppie.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/CacheFiles/lib/croppie/croppie.min.js" asp-append-version="true"></script>
+
+<link href="~/lib/fileUpload/css/fileinput.css" media="all" rel="stylesheet" type="text/css" />
+<link href="~/lib/fileUpload/themes/explorer-fas/theme.css" media="all" rel="stylesheet" type="text/css" />
+<script src="~/lib/fileUpload/js/plugins/piexif.js" type="text/javascript"></script>
+<script src="~/lib/fileUpload/js/plugins/sortable.js" type="text/javascript"></script>
+<script src="~/lib/fileUpload/js/fileinput.js" type="text/javascript"></script>
+<script src="~/lib/fileUpload/js/locales/fr.js" type="text/javascript"></script>
+<script src="~/lib/fileUpload/js/locales/es.js" type="text/javascript"></script>
+<script src="~/lib/fileUpload/themes/fas/theme.js" type="text/javascript"></script>
+<script src="~/lib/fileUpload/themes/explorer-fas/theme.js" type="text/javascript"></script>
+
+<div id="modal-placeholder"></div>
+<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <ul class="nav nav-sitemap justify-content-center justify-content-xl-end">
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="./index.html"> داشبورد </a>
+            </li>
+            <li class="pr-2 pl-2">
+                <i class="fa fa-angle-left text-white align-middle"></i>
+            </li>
+            @if (ViewBag.SliderId != 0)
+            {
+                <li>
+                    <a class="h4 mb-0 text-white d-lg-inline-block" asp-action="CreateOrUpdate" asp-route-sliderId="@Model.Id">ویرایش اسلایدر </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a class="h4 mb-0 text-white d-lg-inline-block" asp-action="CreateOrUpdate">افزودن اسلایدر جدید</a>
+                </li>
+            }
+        </ul>
+        <!-- User -->
+        @await Html.PartialAsync("_AdminLogin")
+    </div>
+</nav>
+<div class="header bg-gradient-primary pb-4 pt-5 pt-md-8"></div>
+
+<div class="container-fluid mt--7">
+    <div class="row mt-5">
+        <div class="card shadow w-100">
+            <div class="card-header font_Vazir_Medium">
+                @if (ViewBag.SliderId != 0)
+                {
+                    <span>ویرایش اسلایدر</span>
+                }
+                else
+                {
+                    <span>افزودن اسلایدر </span>
+                }
+            </div>
+            <form asp-action="CreateOrUpdate" asp-controller="Slider" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+                <div class="card-body">
+                    <div class="row">
+                        <div class="card-header clearfix">
+                            <input type="submit" style="padding: 12px;" value="@(ViewBag.SliderId != 0 ?"به روزرسانی":"افزودن اسلایدر")" class="btn btn-primary text-white btn-sm" />
+                        </div>
+                        <div class="col-md-4" style="box-shadow: 0 0 4px #98e0e7; border-radius: 10px;">
+                            <div class="form-group row">
+                                <div class="col-md-12" style="margin-top:20px;">
+                                    <label class="control-label">محل قرارگیری اسلایدر</label>
+                                </div>
+                                <div class="col-md-12" style="margin-top:10px;">
+                                    <div class="row">
+                                        <div class="col-md-4 custom-control custom-radio mb-2">
+                                            <input asp-for="ImageLocation" value="@ImageLocation.Top" class="custom-control-input" id="customRadio1" type="radio">
+                                            <label class="custom-control-label" for="customRadio1">بالای صفحه</label>
+                                        </div>
+                                        <div class="col-md-3 custom-control custom-radio mb-2">
+                                            <input asp-for="ImageLocation" value="@ImageLocation.Center" class="custom-control-input" id="customRadio2" type="radio">
+                                            <label class="custom-control-label" for="customRadio2">مرکز</label>
+                                        </div>
+                                        <div class="col-md-4 custom-control custom-radio mb-2" style="padding: 0 17px;">
+                                            <input asp-for="ImageLocation" value="@ImageLocation.Bottom" class="custom-control-input" id="customRadio3" type="radio">
+                                            <label class="custom-control-label" for="customRadio3">پایین صفحه</label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="ImageLocation" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="alert alert-warning" style="margin-top: 12px;"><i class="fa fa-exclamation-triangle ml-2"></i>  آدرس  نباید شامل کاراکترهای غیر مجاز فضای خالی و "/","\" باشد. </p>
+                            <div class="form-group row">
+                                <div class="col-md-8 p-0">
+                                    <input asp-for="Url" class="form-control text-left" placeholder="آدرس اسلایدر را وارد نمایید..." />
+                                </div>
+                                <div class="col-md-4 text-left p-0"></div>
+                                <span asp-validation-for="Url" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="card-body">
+                                <div class="card-header pt-2 pb-2 bg-light" style="border-radius:20px;">
+                                    انتخاب اسلایدر | <small> اسلایدر را انتخاب کنید تا تصاویر آپلود شده را نمایش دهد! </small>
+                                </div>
+                                <div class="col-md-12" style="margin-top:15px">
+                                    <ul class="nav nav-pills nav-secondary nav-pills-no-bd nav-pills-icons" style=" margin-left: 15px;" id="v-pills-tab-with-icon" role="tablist" aria-orientation="vertical">
+                                        <li class="col-md-3">
+                                            <a class="nav-link @(Model.TypeOfSlider == TypeOfSlider.Static ? "active show" : Model.TypeOfSlider == 0  ? "active show" : "")" mb-2" id="v-pills-home-tab-icons" data-toggle="pill" href="#v-pills-home-icons" role="tab" aria-controls="v-pills-home-icons" aria-selected="false">
+                                                <i class="flaticon-user-1"></i>
+                                                اسلایدر ثابت
+                                            </a>
+                                        </li>
+                                        <li class="col-md-3">
+                                            <a class="nav-link @(Model.TypeOfSlider == TypeOfSlider.Dynamic ? "active show" : "")" id="v-pills-profile-tab-icons" data-toggle="pill" href="#v-pills-profile-icons" role="tab" aria-controls="v-pills-profile-icons" aria-selected="true">
+                                                <i class="flaticon-settings"></i>
+                                                اسلایدر متحرک بدون کنترل
+                                            </a>
+                                        </li>
+                                        <li class="col-md-3">
+                                            <a class="nav-link @(Model.TypeOfSlider == TypeOfSlider.Ads ? "active show" : "")" id="v-pills-dynamic-tab-icons" data-toggle="pill" href="#v-pills-dynamic-icons" role="tab" aria-controls="v-pills-dynamic-icons" aria-selected="true">
+                                                <i class="flaticon-settings"></i>
+                                                تبلیغات
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="tab-content" id="v-pills-with-icon-tabContent">
+                                <div class="tab-pane fade @(Model.TypeOfSlider == TypeOfSlider.Static ? "active show" : Model.TypeOfSlider == 0  ? "active show" : "")" id="v-pills-home-icons" role="tabpanel" aria-labelledby="v-pills-home-tab-icons">
+                                    <input @(Model.TypeOfSlider != TypeOfSlider.Static ? "" : "checked") value="@TypeOfSlider.Static" id="static" type="hidden" />
+                                    <div class="card-body row">
+                                        <div class="col-md-7">
+                                            <div class="card-header pt-2 pb-2 bg-light">عنوان و توضیحات اسلایدر </div>
+                                            <div class="card-body">
+                                                <p class="alert alert-light" style="margin-top: 12px; background-color: #EEE657; color: #3C3741;">
+                                                    <i class="fa fa-exclamation-triangle ml-2"></i> فیلدهای عنوان و توضیحات اختیاری هستند!
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </p>
+                                                <div class="form-group row">
+                                                    <div class="col-md-3">
+                                                        <label class="control-label">عنوان اسلایدر</label>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <input type="text" id="brandtype" asp-for="Title" class="form-control">
+                                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-md-3">
+                                                        <label class="control-label">توضیحات</label>
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <textarea id="guaranteetype" asp-for="Description" class="form-control"></textarea>
+                                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" style="margin-right: 70px;">
+                                            <div class="card-header pt-2 pb-2 bg-light">تصویر اسلایدر </div>
+                                            <div class="card-body">
+                                                <label class="cabinet center-block">
+                                                    <span>
+                                                        @if (ViewBag.ImageName != null)
+                                                        {
+                                                            <img src="~/slider/@ViewBag.ImageName" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/R.png" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                        }
+                                                        <input type="hidden" asp-for="ImageFile" id="base64" />
+                                                        <a class="btn btn-success btn-sm btn-block mt-2 text-white">
+                                                            <span><i class="fa fa-camera"></i></span> انتخاب کنید ...
+                                                        </a>
+                                                    </span>
+                                                    <input type="file" id="fileSlider" class="item-img file-slider center-block" name="file_photo" />
+                                                </label>
+                                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <label class="control-label"><i class="fa fa-exclamation-triangle ml-2"></i> این اسلایدر با عنوان و توضیحات ثابت است. </label>
+                                        <div class="col-md-12">
+                                            <div class="card-body">
+                                                <label class="cabinet center-block">
+                                                    <span style="width: 1140px;">
+                                                        @if (ViewBag.ImageName != null)
+                                                        {
+                                                            <img src="~/slider/@ViewBag.ImageName" class="static-img" id="item-img-slider" />
+                                                            <span class="static-title">
+                                                                <label>@Model.Title</label>
+                                                            </span>
+                                                            <span class="static-caption">
+                                                                <label>@Model.Description</label>
+                                                            </span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/R.png" class="static-img" id="item-img-slider" />
+                                                            <span class="static-title">
+                                                                <label>عنوان 1</label>
+                                                            </span>
+                                                            <span class="static-caption">
+                                                                <label>توضیحات 1</label>
+                                                            </span>
+                                                        }
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade @(Model.TypeOfSlider == TypeOfSlider.Dynamic ? "active show" : "")" id="v-pills-profile-icons" role="tabpanel" aria-labelledby="v-pills-profile-tab-icons">
+                                    <input @(Model.TypeOfSlider != TypeOfSlider.Dynamic ? "" : "checked") value="@TypeOfSlider.Dynamic" id="dynamic" type="hidden" />
+                                    <div class="col-md-12">
+                                        <label class="control-label"><i class="fa fa-exclamation-triangle ml-2"></i> تصاویر اسلایدر  |  حداکثر ۱۰ تصویر برای نمایش در اسلایدر انتخاب نمایید!</label>
+                                        <input type="hidden" id="sliderId1" name="sliderId1" value="@Model.Id" class="center-block" />
+                                        <div class="file-loading">
+                                            <input id="kv-explorer" name="files" type="file" multiple>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <label class="control-label"><i class="fa fa-exclamation-triangle ml-2"></i> این اسلایدر در ۷ ثانیه تغییر میکند |  </label>
+                                    <div class="amazingslider-wrapper" id="amazingslider-wrapper-1" style="display:block;position:relative;width:1140px;margin:0px auto 0px;">
+                                        <div class="amazingslider" id="amazingslider-1" style="display: block; position: relative; margin: 0 auto; margin-left: -10px; ">
+                                            <ul class="amazingslider-slides" style="display: none; ">
+                                                @if (ViewBag.Sliders != null && ViewBag.Sliders.Count != 0)
+                                                {
+                                                    @foreach (var image in ViewBag.Sliders)
+                                                    {
+                                                        <li>
+                                                            <img src="~/slider/@image" />
+                                                        </li>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <li>
+                                                        <img src="~/assets/img/R.png" />
+                                                    </li>
+                                                    <li>
+                                                        <img src="~/assets/img/SpecifiedImage.jpg" />
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade @(Model.TypeOfSlider == TypeOfSlider.Ads ? "active show" : "")" id="v-pills-dynamic-icons" role="tabpanel" aria-labelledby="v-pills-dynamic-tab-icons">
+                                    <input @(Model.TypeOfSlider != TypeOfSlider.Static ? "" : "checked") value="@TypeOfSlider.Static" id="static" type="hidden" />
+                                    <div class="card-body row">
+                                        <label class="control-label"><i class="fa fa-exclamation-triangle ml-2"></i> این اسلایدر برای تبلیغات سایت است. </label>
+                                        <div class="col-md-4" style="margin-right: 70px;">
+                                            <div class="card-header pt-2 pb-2 bg-light">تصویر اسلایدر تبلیغ </div>
+                                            <div class="card-body">
+                                                <label class="cabinet center-block">
+                                                    <span>
+                                                        @if (ViewBag.ImageAdName != null)
+                                                        {
+                                                            <img src="~/slider/@ViewBag.ImageAdName" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/R.png" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                        }
+                                                        <input type="hidden" asp-for="ImageAdFile" id="base64" />
+                                                        <a class="btn btn-success btn-sm btn-block mt-2 text-white">
+                                                            <span><i class="fa fa-camera"></i></span> انتخاب کنید ...
+                                                        </a>
+                                                    </span>
+                                                    <input type="file" id="fileSlider" class="item-img file-slider center-block" name="file_photo" />
+                                                </label>
+                                                <span asp-validation-for="ImageAdFile" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="card-body">
+                                                <label class="cabinet center-block">
+                                                    <span style="width: 1140px;">
+                                                        @if (ViewBag.ImageAdName != null)
+                                                        {
+                                                            <img src="~/slider/@ViewBag.ImageAdName" class="static-img" id="item-img-slider" />
+
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/R.png" class="static-img" id="item-img-slider" />
+                                                        }
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    برش تصویر برای اسلایدر
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="upload-demo" class="center-block"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">بستن</button>
+                <button type="button" id="cropImageBtn" class="btn btn-sm btn-primary mr-2">برش</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    var $uploadCrop,
+        tempFilename,
+        rawImg,
+        imageId;
+
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            swal("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#upload-demo').croppie({
+        viewport: {
+            width: 740,
+            height: 500,
+        },
+        enforceBoundary: false,
+        enableExif: true
+    });
+
+    $('#cropImagePop').on('shown.bs.modal', function () {
+        $uploadCrop.croppie('bind', {
+            url: rawImg
+        }).then(function () {
+            console.log('jQuery bind complete');
+        });
+    });
+
+    $('.item-img').on('change', function () {
+        imageId = $(this).data('id'); tempFilename = $(this).val();
+        $('#cancelCropBtn').data('id', imageId); readFile(this);
+    });
+
+    $('#cropImageBtn').on('click', function (ev) {
+        $uploadCrop.croppie('result', {
+            type: 'base64',
+            format: 'jpeg',
+            size: { width: 740, height: 500 }
+        }).then(function (resp) {
+            $('#item-img-output').attr('src', resp);
+            debugger
+
+            var aaaaa = document.getElementById('item-img-slider');
+            $(aaaaa).attr('src', resp);
+            $("#base64").val(resp.split(',')[1]);
+            $('#cropImagePop').modal('hide');
+        });
+    });
+
+    $(document).ready(function () {
+        $("#kv-explorer").fileinput({
+            'theme': 'fas',
+            //'theme': 'explorer-fas',
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            uploadUrl: "/UploadSlider",
+            uploadAsync: false,
+            //minFileCount: 5,
+            maxFileCount: 10,
+            maxFileSize: 80000,
+            maxFilesNum: 10,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileTypes: ['image'],
+            uploadExtraData: function () {
+                return {
+                    sliderId: $("#sliderId1").val(),
+                    idOfSlider: 1
+                };
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#kv-explorer-2").fileinput({
+            'theme': 'fas',
+            //'theme': 'explorer-fas',
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            uploadUrl: "/UploadSlider",
+            uploadAsync: false,
+            //minFileCount: 5,
+            maxFileCount: 10,
+            maxFileSize: 80000,
+            maxFilesNum: 10,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileTypes: ['image'],
+            uploadExtraData: function () {
+                return {
+                    sliderId: $("#sliderId2").val(),
+                    idOfSlider: 2
+                };
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $("#kv-explorer-3").fileinput({
+            'theme': 'fas',
+            //'theme': 'explorer-fas',
+            overwriteInitial: false,
+            initialPreviewAsData: true,
+            uploadUrl: "/UploadSlider",
+            uploadAsync: false,
+            //minFileCount: 5,
+            maxFileCount: 10,
+            maxFileSize: 80000,
+            maxFilesNum: 10,
+            allowedFileExtensions: ['jpg', 'png', 'gif'],
+            allowedFileTypes: ['image'],
+            uploadExtraData: function () {
+                return {
+                    sliderId: $("#sliderId3").val(),
+                    idOfSlider: 3
+                };
+            }
+        });
+    });
+
+
+    //<button type="button" class="kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary" title="View Details"><i class="fas fa-search-plus"></i></button>
+    window.addEventListener('DOMContentLoaded', () => {
+        var btn = 'button',
+            icon = 'i';
+        var _btn = document.createElement(btn);
+        var _icon = document.createElement(icon);
+        _btn.setAttribute("type", "button");
+        _btn.setAttribute("class", "kv-file-zoom btn btn-sm btn-kv btn-default btn-outline-secondary");
+        _btn.setAttribute("title", "آدرس و توضیحات تصویر");
+        _icon.setAttribute("class", "fas fa-search-plus");
+        _btn.appendChild(_icon);
+
+        //$(function () {
+            //var tabFaded = document.getElementById("v-pills-dynamicBootstrap-icons");
+            var box = document.getElementById("v-pills-with-icon-tabContent");
+
+                debugger
+
+        console.log(box.children[3]);
+
+                $(document).on('load', box.children[3], function () {
+                debugger
+                var element = document.getElementById("kv-explorer-3");
+                var aa = element.children[0].innerHTML;
+                    debugger
+                    var element = document.getElementById("kv-explorer-3");
+                    var box = element.querySelector(".file-drop-zone");
+                    box.addEventListener(box.hasChildNodes, function () {
+                        debugger
+                        var newElements = box.querySelectorAll(".file-actions div.file-footer-buttons");
+                        $.each(element.hasChildNodes, function(){
+                            debugger
+                        })
+                        $(newElements).on("load", function (e) {
+                            debugger
+
+                        })
+
+                        function setNewElement(e) {
+                            debugger
+                            newElements.appendChild(_btn);
+                        }
+                        newElements.forEach(element => element.addEventListener("load", setNewElement));
+
+                        $(newElements).load(function (e) {
+                        debugger
+
+                        })
+                    })
+                })
+            //})
+    });
+
+
+    //window.addEventListener('DOMContentLoaded', () => {
+    //    const slider = document.querySelector("#item-img-slider");
+    //    $(slider).on("load", function (e) {
+        //(function () {
+            //debugger
+            //var _zoom = document.querySelector('#zoom');
+            //_zoom.setAttribute("style", '');
+            //var zoom = document.getElementById('zoom'),
+            //        Zw = zoom.offsetWidth,
+            //        Zh = zoom.offsetHeight,
+            //        img = document.querySelector('#item-img-slider');
+
+            //    var timeout, ratio, Ix, Iy;
+
+            //    function activate() {
+            //        document.body.classList.add('active');
+            //    }
+
+            //    function deactivate() {
+            //        document.body.classList.remove('active');
+            //    }
+
+            //    function updateMagnifier(x, y) {
+            //        zoom.style.top = (y) + 'px';
+            //        zoom.style.left = (x) + 'px';
+            //        zoom.style.backgroundPosition = ((Ix - x) * ratio + Zw / 2) + 'px ' + ((Iy - y) * ratio + Zh / 2) + 'px';
+            //    }
+
+            //    function onLoad() {
+            //        ratio = img.naturalWidth / img.width;
+            //        zoom.style.backgroundImage = 'url(' + img.src + ')';
+            //        Ix = img.offsetLeft;
+            //        Iy = img.offsetTop;
+            //    }
+
+            //    function onMousemove(e) {
+            //        clearTimeout(timeout);
+            //        activate();
+            //        updateMagnifier(e.x, e.y);
+            //        timeout = setTimeout(deactivate, 2500);
+            //    }
+
+            //    function onMouseleave() {
+            //        deactivate();
+            //    }
+
+            //    img.addEventListener('load', onLoad);
+            //    img.addEventListener('mousemove', onMousemove);
+            //    img.addEventListener('mouseleave', onMouseleave);
+            //})();
+    //    })
+    //});
+
+</script>
+
+
+
+@*<html>
+    <body>
+        <div id="new">
+            <p id="p1">Tutorix</p>
+            <p id="p2">Tutorialspoint</p>
+        </div>
+        <script>
+            var tag = document.createElement("p");
+            var text = document.createTextNode("Tutorix is the best e-learning platform");
+            tag.appendChild(text);
+            var element = document.getElementById("kv-explorer-3");
+            element.appendChild(tag);
+        </script>
+    </body>
+    </html>*@

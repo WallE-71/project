@@ -1,0 +1,18 @@
+<div id="reply-{{parentCommentId}}" class="contact-form-area">
+    <form (submit)="SendComment()" [formGroup]="form" class="c-form" method="post">
+        <div class="row">
+            <div class="col-12 col-lg-6">
+                <input type="text" formControlName="name" class="form-control" placeholder="نام*">
+            </div>
+            <div class="col-12 col-lg-6">
+                <input type="email" formControlName="email" class="form-control" placeholder="ایمیل*">
+            </div>
+            <div class="col-12" style="margin-top: 10px;">
+                <textarea formControlName="description" class="form-control" placeholder="دیدگاه خود را بنویسید ...*"></textarea>
+            </div>
+            <div class="col-12">
+                <button class="btn vizew-btn mt-10 btn-sm float-left" type="submit">ارسال دیدگاه</button>
+            </div>
+        </div>
+    </form>
+</div>

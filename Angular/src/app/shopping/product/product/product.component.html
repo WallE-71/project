@@ -1,0 +1,1307 @@
+<!-- start static-top-------------------->
+<ng-container *ngFor="let slider of sliders">
+    <span *ngIf="slider != null && slider?.imageLocation == 1 && slider?.typeOfSlider == 1">
+        <img src="../../../../assets/images/slider/{{slider?.imageFile}}" class="static-img" id="item-img-slider" />
+    </span>
+</ng-container>
+<!-- end static-top-------------------->
+
+<!-- start ADplacement-top-------------------->
+<ng-container *ngFor="let slider of sliders">
+    <span *ngIf="slider != null && slider?.imageLocation == 1 && slider?.typeOfSlider == 3">
+        <img src="../../../../assets/images/slider/{{slider?.imageFile}}" class="ads-img2"  />
+    </span>
+</ng-container>
+<!-- end ADplacement-top-------------------->
+
+<!-- start dynamic-top-------------------->
+<ng-container *ngFor="let slider of sliders?.imageFiles">
+    <span *ngIf="slider != null && slider?.imageLocation == 1 && slider?.typeOfSlider == 2">
+        <swiper [config]="config">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="../../../../assets/images/slider/{{slider?.imageFile}}" alt="img 1"></div>
+            </div>
+        </swiper>
+    </span>
+</ng-container>
+<!-- end dynamic-top-------------------->
+
+<!-- slidre-product------------------------>
+<div class="container-product">
+    <div class="d-block">
+
+        <!-- لبنیات -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">لبنیات</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product1 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product1">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- خواربار و نان -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">خواربار و نان</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product2 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product2">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- دستمال و شوینده -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">دستمال و شوینده</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product3 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product3">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- تنقلات -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">تنقلات</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product4 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product4">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- نوشیدنی -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">نوشیدنی</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product5 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product5">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- start dynamic-top-------------------->
+        <div *ngFor="let slider of sliders?.imageFiles">
+            <span *ngIf="slider != null && slider?.imageLocation == 2 && slider?.typeOfSlider == 2">
+                <swiper [config]="config">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide"><img src="../../../../assets/images/slider/{{slider?.imageFile}}" alt="img 1"></div>
+                    </div>
+                </swiper>
+            </span>
+        </div>
+        <!-- end dynamic-top-------------------->
+        
+        <!-- پیشنهاد لحظه‌ای ------------------------>
+        <div class="col-lg-3 col-md-3 col-xs-12 pl order-1 d-block">
+            <div class="slider-moments">
+                <div class="widget-suggestion widget card" style="min-height: 390px;">
+                    <header class="card-header promo-single-headline">
+                        <h3 class="card-title" style="padding-right: 10px;">پیشنهاد لحظه‌ای</h3>
+                    </header>
+                    <div id="suggestion-slider" class="owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <div class="owl-stage-outer">
+                            <div class="owl-stage"
+                                style="transform: translate3d(1369px, 0px, 0px); transition: all 0.25s ease 0s;">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td *ngIf="preferedProductsNoDiscount != null">
+                                            <owl-carousel-o [options]="customOptions">
+                                                <ng-container *ngFor="let product of preferedProductsNoDiscount">
+                                                    <ng-template carouselSlide [id]="product.Id">
+                                                        <div class="owl-item cloned" style="width: 309.083px;">
+                                                            <div class="item">
+                                                                <a (click)="Details(product.Id)"
+                                                                    class="d-block hover-img-link">
+                                                                    <img src="../assets/images/product/{{product.imageName}}"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+                                                                <h2 class="product-title">
+                                                                    <a (click)="Details(product.Id)">
+                                                                        {{product.name}}
+                                                                    </a>
+                                                                </h2>
+                                                                <div class="price">
+                                                                    <ins><span>{{product.price}}<span> ریال
+                                                                            </span></span></ins>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </owl-carousel-o>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="progressBar">
+                        <div class="slide-progress" style="width: 100%; transition: width 5000ms ease 0s;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Slider-Moment------------------------>
+
+        <!-- Slider-Moment------------------------->
+        <div class="col-lg-9 col-md-9 col-xs-12 pl">
+            <div class="content-widget-amazing">
+                <section id="amazing-slider" class="carousel slide carousel-fade card" data-ride="carousel">
+                    <div class="row m-0">
+                        <div class="carousel-inner p-0 col-12 col-lg-9">
+                            <div #owlCarousel class="carousel-item active">
+                                <table style="width:100%;">
+                                    <tr>
+                                        <td *ngIf="preferedProducts != null">
+                                            <owl-carousel-o [options]="customOptions">
+                                                <ng-container *ngFor="let product of preferedProducts">
+                                                    <ng-template carouselSlide [id]="product.Id">
+                                                        <div class="row m-0">
+                                                            <div class="right-col col-5 d-flex align-items-center">
+                                                                <a (click)="Details(product.Id)"
+                                                                    class="w-100 text-center img-link-amazing">
+                                                                    <img src="../assets/images/product/{{product.imageName}}"
+                                                                        class="img-fluid" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <div class="col-7">
+                                                                <div class="discount">
+                                                                    <span class="discount-percent">
+                                                                        {{product.percentDiscount}}
+                                                                        <i class="fa fa-percent"></i>
+                                                                    </span>
+                                                                </div>
+                                                                <h2 class="product-title">
+                                                                    <a (click)="Details(product.Id)">
+                                                                        {{product.name}}
+                                                                    </a>
+                                                                </h2>
+                                                                <div class="price text-center"
+                                                                    *ngIf="product.percentDiscount == 0">
+                                                                    <ins><span>{{product.price}}<span> ریال
+                                                                            </span></span></ins>
+                                                                </div>
+                                                                <div class="price text-center"
+                                                                    *ngIf="product.percentDiscount != 0">
+                                                                    <del><span>{{product.price}}<span> ریال
+                                                                            </span></span></del>
+                                                                    <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                            </span></span></ins>
+                                                                </div>
+                                                                <ul class="list-group">
+                                                                    <li class="list-group-item">
+                                                                        <i class="fa fa-check"></i>
+                                                                        <span class="text">{{product.description}} </span>
+                                                                    </li>
+                                                                </ul>
+                                                                <div class="countdown-timer">
+                                                                    <div class="countdown h4"
+                                                                        data-date-time="10/10/2020 12:00"
+                                                                        data-labels='{"label-day": "روز", "label-hour": "ساعت", "label-minute": "دقیقه", "label-second": "ثانیه"}'>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </ng-template>
+                                                </ng-container>
+                                            </owl-carousel-o>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <!-- End Slider-Moment------------------------->
+
+        <!-- روزهای پر تخفیف ------------------------>
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">
+                            <div class="col-12">
+                                <h6>{{dayOfDiscount}} های طلایی</h6>
+                            </div>
+                        </span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="specialDiscountProducts != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of specialDiscountProducts">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Slider-Discount Special------------------------>
+
+        <!-- بیشترین تخفیف ها ------------------------>
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">
+                            <div class="col-12">
+                                <h6>بیشترین تخفیف ها</h6>
+                            </div>
+                        </span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="mostDiscountProducts != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of mostDiscountProducts">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Slider-Discount Special------------------------>
+
+        <!-- start static-top-------------------->
+        <span *ngFor="let slider of sliders">
+            <span *ngIf="slider != null && slider?.imageLocation == 2 && slider?.typeOfSlider == 1">
+                <img src="../../../../assets/images/slider/{{slider?.imageFile}}" class="static-img" id="item-img-slider" />
+            </span>
+        </span>
+        <!-- end static-top-------------------->
+
+        <!-- پر طرفدارترین ها ------------------------>
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">
+                            <div class="col-12">
+                                <h6>پر طرفدارترین ها</h6>
+                            </div>
+                        </span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="mostPopularProducts != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of mostPopularProducts">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Slider-MostPopularProducts------------------------>
+
+        <!-- مواد پروتئینی -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">مواد پروتئینی</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product6 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product6">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- آرایشی و بهداشتی -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">آرایشی و بهداشتی</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product7 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product7">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- چاشنی و افزودنی -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">چاشنی و افزودنی</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product8 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product8">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- پر بازدیدترین ها ------------------------>
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">
+                            <div class="col-12">
+                                <h6>پر بازدیدترین ها</h6>
+                            </div>
+                        </span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="mostViewedProduct != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of mostViewedProduct">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="row">
+            <div class="col-12">
+                <div class="section-heading">
+                    <h4>پر بازدیدترین ها</h4>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+         -->
+        <!-- <nav class="w-25 m-auto">
+            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                <mat-tab-group animationDuration="0ms" [disablePagination]=true>
+
+                    <mat-tab label="امروز">
+                        <div class="row">
+                            <div *ngIf="mostViewedProduct != null">
+                                <ng-container *ngFor="let product of mostViewedProduct">
+                                    <div class="col-12 col-md-4">
+                                        <div class="single-post-area mb-80 border">
+                                            <div class="post-thumbnail">
+                                                <img src="../assets/images/product/{{product.imageName}}" class="img-fluid" alt="">
+                                                <span class="video-duration">{{product.createDateTime}}</span>
+                                            </div>
+                
+                                            <div class="post-content clearfix">
+                                                <a href="#" class="post-cata cata-sm cata-success">{{product.nameOfCategories}}</a>
+                                                <a (click)="Details(product.Id)" class="post-title p-2"> {{product.productName}} </a>
+                                                <div class="post-meta d-flex float-left pb-1">
+                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> {{product.numberOfVisit}}</a>
+                                                    <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{product.price}}</a>
+
+                                                    <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> {{product.numberOfComments}}</a>
+                                                    <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{product.NumberOfDisLike}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <p *ngIf="mostViewedProduct == null" class="col-md-12 alert alert-info text-center">پربازدیدترین محصول روز یافت نشد ...</p>
+                    </mat-tab>
+
+                    <mat-tab label="هفته">
+                        <div class="row">
+                            <div *ngIf="mostViewedProductInWeek != null">
+                                <ng-container *ngFor="let product of mostViewedProductInWeek">
+                                    <div class="col-12 col-md-4">
+                                        <div class="single-post-area mb-80 border">
+                                            <div class="post-thumbnail">
+                                                <img src="../assets/images/product/{{product.imageName}}" class="img-fluid" alt="">
+                                                <span class="video-duration">{{product.createDateTime}}</span>
+                                            </div>
+                
+                                            <div class="post-content clearfix">
+                                                <a href="#" class="post-cata cata-sm cata-success">{{product.nameOfCategories}}</a>
+                                                <a (click)="Details(product.Id)" class="post-title p-2"> {{product.productName}} </a>
+                                                <div class="post-meta d-flex float-left pb-1">
+                                                    <a href="#"><i class="fa fa-eye" aria-hidden="true"></i> {{product.numberOfVisit}}</a>
+                                                    <a href="#"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> {{product.price}}</a>
+
+                                                    <a href="#"><i class="fa fa-comments-o" aria-hidden="true"></i> {{product.numberOfComments}}</a>
+                                                    <a href="#"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> {{product.NumberOfDisLike}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <p *ngIf="mostViewedProductInWeek == null" class="col-md-12 alert alert-info text-center">پربازدیدترین محصول هفته یافت نشد ...</p>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </nav> -->
+        <!-- End Slider-mostViewedProduct------------------------>
+
+
+        <!-- پربحث ترین ها ------------------------>
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">
+                            <div class="col-12">
+                                <h6>پربحث ترین ها</h6>
+                            </div>
+                        </span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="mostTalkProduct != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of mostTalkProduct">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Slider-mostTalkProduct------------------------>
+
+        <!-- میوه و سبزیجات تازه -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">میوه و سبزیجات تازه</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product9 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product9">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- کنسرو و غذای آماده -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">کنسرو و غذای آماده</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product10 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product10">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- صبحانه -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">صبحانه</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product11 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product11">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- خشکبار، دسر و شیرینی -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">خشکبار، دسر و شیرینی</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product12 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product12">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- start ADplacement-top-------------------->
+        <span *ngFor="let slider of sliders">
+            <span *ngIf="slider != null && slider?.imageLocation == 2 && slider?.typeOfSlider == 3">
+                <img src="../../../../assets/images/slider/{{slider?.imageFile}}" class="ads-img2" />
+            </span>
+        </span>
+        <!-- end ADplacement-top-------------------->
+
+        <!-- خانه و سبک زندگی -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">خانه و سبک زندگی</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product13 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product13">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- کودک و نوزاد -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">کودک و نوزاد</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product14 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product14">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- مد و پوشاک -->
+        <div class="col-lg-12 col-md-12 col-xs-12 pr order-1 d-block">
+            <div class="slider-widget-products">
+                <div class="widget widget-product card">
+                    <header class="card-header" style="background-color: #fff;">
+                        <span class="title-one" style="padding: 2px 10px;">مد و پوشاک</span>
+                        <h3 class="card-title"></h3>
+                    </header>
+                    <div #owlCarousel class="product-carousel owl-carousel owl-theme owl-rtl owl-loaded owl-drag">
+                        <table style="width:100%;">
+                            <tr>
+                                <td *ngIf="product15 != null">
+                                    <owl-carousel-o [options]="customOptions">
+                                        <ng-container *ngFor="let product of product15">
+                                            <ng-template carouselSlide [id]="product.Id">
+                                                <div class="owl-stage-outer">
+                                                    <div class="owl-item active" style="width: 309.083px;">
+                                                        <div class="item">
+                                                            <a (click)="Details(product.Id)"
+                                                                class="d-block hover-img-link">
+                                                                <img src="../assets/images/product/{{product.imageName}}"
+                                                                    class="img-fluid" alt="">
+                                                            </a>
+                                                            <h2 class="post-title">
+                                                                <a>{{product.name}}</a>
+                                                            </h2>
+                                                            <div class="price" *ngIf="product.percentDiscount == 0">
+                                                                <ins><span>{{product.price}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                            <div class="price" *ngIf="product.percentDiscount != 0">
+                                                                <del><span>{{product.price}}<span> ریال
+                                                                        </span></span></del>
+                                                                <ins><span>{{product.actionDiscount}}<span> ریال
+                                                                        </span></span></ins>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ng-container>
+                                    </owl-carousel-o>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End slidre-product-------------------->
+
+<!-- start static-top-------------------->
+<span *ngFor="let slider of sliders">
+    <span *ngIf="slider != null && slider?.imageLocation == 3 && slider?.typeOfSlider == 1">
+        <img src="../../../../assets/images/slider/{{slider?.imageFile}}" class="static-img" id="item-img-slider" />
+    </span>
+</span>
+<!-- end static-top-------------------->
+
+<!-- start ADplacement-top-------------------->
+<span *ngFor="let slider of sliders">
+    <span *ngIf="slider != null && slider?.imageLocation == 3 && slider?.typeOfSlider == 3">
+        <img src="../../../../assets/images/slider/{{slider?.imageFile}}" class="ads-img2" />
+    </span>
+</span>
+<!-- end ADplacement-top-------------------->
+
+<!-- start dynamic-top-------------------->
+<div *ngFor="let slider of sliders?.imageFiles">
+    <span *ngIf="slider != null && slider?.imageLocation == 3 && slider?.typeOfSlider == 2">
+        <swiper [config]="config">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide"><img src="../../../../assets/images/slider/{{slider?.imageFile}}" alt="img 1"></div>
+            </div>
+        </swiper>
+    </span>
+</div>
+<!-- end dynamic-top-------------------->

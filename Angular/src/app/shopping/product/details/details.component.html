@@ -1,0 +1,166 @@
+<section class="cart-home">
+    <div class="post-item-cart d-block order-2">
+        <div class="content-page">
+            <div class="cart-collaterals">
+                <div class="totals d-block">
+                    <div class="container">
+                        <div class="grid second-nav">
+                            <div class="column-xs-12">
+                                <nav>
+                                    <ol class="breadcrumb-list">
+                                        <li class="breadcrumb-item"><a href="/">صفحه نخست</a></li>
+                                        <li class="breadcrumb-item"><a
+                                                href="/category/{{product.nameOfCategories}}">/ {{product.nameOfCategories}}</a>
+                                        </li>
+                                        <li class="breadcrumb-item active">{{product.name}}</li>
+                                    </ol>
+                                </nav>
+                            </div>
+                        </div>
+                        <div class="grid product">
+                            <div class="column-xs-12 column-md-7">
+                                <div class="product-gallery">
+                                    <div class="product-image">
+                                        <!-- <div class="box"> -->
+                                        <!-- <a> -->
+                                        <!-- <span class="c1"></span><span class="c2"></span><span class="c3"></span><span class="c4"></span><span class="c5"></span><span class="c6"></span>
+                                                <span class="c7"></span><span class="c8"></span><span class="c9"></span><span class="c10"></span><span class="c11"></span><span class="c12"></span>
+                                                <span class="c13"></span><span class="c14"></span><span class="c15"></span><span class="c16"></span><span class="c17"></span><span class="c18"></span>
+                                                <span class="c19"></span><span class="c20"></span><span class="c21"></span><span class="c22"></span><span class="c23"></span><span class="c24"></span>
+                                                <span class="c25"></span><span class="c26"></span><span class="c27"></span><span class="c28"></span><span class="c29"></span><span class="c30"></span>
+                                                <span class="c31"></span><span class="c32"></span><span class="c33"></span><span class="c34"></span><span class="c35"></span><span class="c36"></span> -->
+                                        <img #active_image class="active"
+                                            src="../assets/images/product/{{product.imageName}}" />
+                                        <!-- <img class="image"> -->
+                                        <!-- </a> -->
+
+                                        <!-- </div> -->
+                                    </div>
+                                    <span>
+                                        <a style="margin: 0 5px;" class="numberOfComment"><i class="fa fa-comments-o"
+                                                aria-hidden="true"></i> {{product.numberOfComments}} </a>
+                                        <a style="cursor: pointer;" (click)="Bookmark()" id="bookmark">
+                                            <i #bookmark style="margin-right: 5px;"
+                                                class="fa {{product?.IsBookmarked?'fa-bookmark':'fa-bookmark-o'}}"
+                                                aria-hidden='true'></i>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="column-xs-12 column-md-5">
+                                <p class="info-header">
+                                    اطلاعات محصول</p>
+                                <h6>{{product.name}}</h6>
+                                <p>
+                                    <span *ngIf="product.actionDiscount == 0">
+                                        <ins><span>{{product.price}}<span> ریال
+                                                </span></span></ins>
+                                    </span>
+                                    <span *ngIf="product.actionDiscount != 0">
+                                        <del><span>{{product.price}}<span>
+                                                </span></span></del> |  
+                                        <ins><span>  {{product.actionDiscount}} <small>ریال</small><span> 
+                                                </span></span></ins> | 
+                                    </span>
+                                    <span>{{product.nameOfBrand}}</span>
+                                    </p>
+                                <div class="description">
+                                    <p>{{product.shortName}}</p>
+                                </div>
+                                <button class="add-to-cart" (click)="AddToCart(product.Id)">
+                                    افزودن به سبد خرید
+                                </button>
+                                <br /><br />
+                                <ul *ngIf="product?.imageFiles?.length != 0" class="image-list">
+                                    <li *ngFor="let image of imageFiles" class="image-item">
+                                        <img #image_list src="../../../../assets/images/gallery/{{image}}" alt="" />
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <mat-tab-group animationDuration="0ms" [disablePagination]=true>
+                                <mat-tab label="جزئیات محصول">
+                                    <div class="grid product column-md-12">
+                                        <div class="column-xs-12 column-md-5">
+                                            <div class="product-image" style="box-shadow: 0 0px 10px orchid;">
+                                                <img class="active"
+                                                    src="../assets/images/product/{{product.imageName}}" />
+                                            </div>
+                                        </div>
+                                        <div class="description column-md-7">
+                                            توضیحات درباره {{product.name}}
+                                            <hr style="background-color: orange; size: 2px;" />
+                                            <p>قیمت: 
+                                                <span *ngIf="product.actionDiscount == 0">
+                                                    <ins><span>{{product.price}}<span> ریال
+                                                            </span></span></ins>
+                                                </span>
+                                                <span *ngIf="product.actionDiscount != 0">
+                                                    <del><span>{{product.price}}<span>
+                                                            </span></span></del> |  
+                                                    <ins><span>  {{product.actionDiscount}} <small>ریال</small><span> 
+                                                            </span></span></ins>
+                                                </span> 
+                                            </p>
+                                            <span>تاریخ تولید: {{product.persianInsertTime}} - تاریخ انقضا:
+                                                {{product.persianExpirationDate}}</span>
+                                            <p style="margin-top: 15px;">برند: {{product.nameOfBrand}}</p>
+                                            <hr style="background-color: orange; size: 2px;" />
+                                            <p>جزئیات محصول: {{product.description}}</p>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="فروشندگان و ضمانت محصول">
+                                    <div class="grid product column-md-12">
+                                        <div class="column-xs-12 column-md-5">
+                                            <div class="product-image" style="box-shadow: 0 0px 10px darkblue;">
+                                                <img class="active"
+                                                    src="../assets/images/seller/{{seller?.sellerImage}}" />
+                                            </div>
+                                        </div>
+                                        <div class="description column-md-7">
+                                            فروشنده محصول {{seller?.name}}
+                                            <hr style="background-color: orange; size: 2px;" />
+                                            <span>تاریخ ثبت نام: {{seller?.persianRegisterDate}} </span><br />
+                                            درباره فروشنده:
+                                            <p> {{seller?.description}}</p>
+                                            <app-rating (onRating)="Rating(seller?.Id, $event)"
+                                                [selectedRate]="seller.userVote"></app-rating>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="نظرات مشتریان">
+                                    <app-comment [ProductId]="productId"></app-comment>
+                                </mat-tab>
+                                <mat-tab label="محصولات مرتبط">
+                                    <div class="grid related-products">
+                                        <div *ngFor="let item of productsRelated" class="column-md-3">
+                                            <img (click)="Details(item.Id)"
+                                                src="../assets/images/product/{{item?.imageName}}">
+                                            <h4>{{item?.name}}</h4>
+                                            <p class="price">{{item?.price}}</p>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="محصولات پیشنهادی">
+                                    <div class="grid related-products row">
+                                        <div *ngFor="let item of preferedProductsNoDiscount" class="column-md-3">
+                                            <img (click)="Details(item?.Id)"
+                                                src="../assets/images/product/{{item?.imageName}}">
+                                            <h4>{{item?.name}}</h4>
+                                            <p class="price">{{item?.price}}</p>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                    <!-- End container -->
+                    <!-- This template has been downloaded from Webrubik.com -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

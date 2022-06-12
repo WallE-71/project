@@ -1,0 +1,10 @@
+<app-header *ngIf="showHeader" fxLayout="column"></app-header>
+
+<div class="container-main" fxLayout="row" fxFlex="100">
+    <!-- <router-outlet _ngcontent-hkq-c45></router-outlet> -->
+    <router-outlet></router-outlet>
+    <!-- <app-profile></app-profile> -->
+    <!-- <app-order></app-order> -->
+</div>
+
+<app-footer *ngIf="showFooter" fxLayout="column"></app-footer>

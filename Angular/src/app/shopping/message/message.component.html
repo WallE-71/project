@@ -1,0 +1,80 @@
+<section class="cart-home">
+    <form (submit)="SendMessage()" [formGroup]="form" class="c-form">
+        <div class="post-item-cart d-block order-2">
+            <div class="content-page">
+                <div class="cart-form">
+                    <h6 class="shipping-destination">نوع گفتکو را انتخاب نمایید:</h6>
+                    <br />
+                    <table class="table-cart cart table table-borderless">
+                        <thead>
+                            <tr>
+                                <th mat-label scope="col" class="product-cart-name">انتقادات و پیشنهادات</th>
+                                <th mat-label scope="col" class="product-cart-quantity">سوالات</th>
+                                <th mat-label scope="col" class="product-cart-price">تیکت</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <td class="product-cart-price">
+                                <input formControlName="typeFeedBack" type="radio" value="1" id="1" aria-invalid="false">
+                            </td>
+                            <td class="product-cart-price">
+                                <input formControlName="typeFeedBack" type="radio" value="2" id="2" aria-invalid="false">
+                            </td>
+                            <td class="product-cart-price">
+                                <input formControlName="typeFeedBack" type="radio" value="3" id="3" aria-invalid="false">
+                            </td>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="cart-collaterals">
+                    <div class="totals d-block">
+                        <h3 class="Total-cart-total">متن گفتکو را وارد نمایید:</h3>
+                        <div class="checkout-summary">
+                            <ul class="checkout-summary-summary">
+                                <li class="shipping-totals">
+                                    <input type="text" style="min-width: 500px; background-color:mintcream;"
+                                    matInput  class="comment-textarea" placeholder="ایمیل ..." formControlName="email" aria-required="true" aria-invalid="false"/>
+                                </li>
+                                <li class="shipping-totals">
+                                    <textarea style="min-width: 500px; background-color:mintcream;"
+                                        class="comment-textarea" placeholder="توضیحات ..."
+                                        matInput formControlName="description" aria-required="true" aria-invalid="false"></textarea>
+                                </li>
+                                <li class="discount-code">
+                                    <button mat-flat-button class="col-md-2 account-link" style="background-color: cornflowerblue;min-width: 100px;" >
+                                        <label style="text-align: center;margin-right: 20px;">ارسال پیام</label>  
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="card-header">
+                    بعد از تایید پیام از این قسمت منتظر پاسخ خود باشید!
+                </div>
+                <div class="col-md-12">
+                    <p>{{author}}</p>
+                    <textarea style="font-size: inherit; margin: inherit;padding: 10px 20px;">{{Answer}}</textarea>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+
+<!-- <form>
+    <mat-form-field appearance="outline">
+      <>Name*</mat-label>
+      <input  />
+      <input formControlName="description" matInput />
+    </mat-form-field>  
+    <h4>Select the location of the theater</h4> 
+    <div style="margin-top: 650px">
+      <button  color="primary">
+        Save changes
+      </button>
+      <a  mat-stroked-button routerLink="/message">Cancel</a>
+    </div>
+  </form> -->

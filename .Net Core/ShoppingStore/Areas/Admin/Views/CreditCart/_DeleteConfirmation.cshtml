@@ -1,0 +1,45 @@
+﻿@model ShoppingStore.Domain.Entities.Cart
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">حذف سبد خرید</h3>
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix">
+                @if (Model == null)
+                {
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                }
+                else
+                {
+                    @if (Model.IsComplete)
+                    {
+                        <h4>آیا شما می خواهید سبد خرید کاربر  @Model.User.FirstName + " " + @Model.User.LastName از لیست حذف کنید ؟</h4>
+                        <form asp-action="Delete">
+                            <input name="IsValid" type="hidden" value="True" />
+                            <input type="hidden" asp-for="Id" />
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger"> این سبد خرید تاکنون پرداخت نشده و امکان حذف ندارد</div>
+                    }
+                }
+            </div>
+
+            <div class="modal-footer">
+                @if (Model != null && Model.IsComplete)
+                {
+                    <button type="submit" class="btn btn-sm btn-labeled btn-success" data-save="modal">
+                        بله
+                    </button>
+                }
+                <button type="button" class="btn btn-sm btn-labeled  btn-danger  mr-1" data-dismiss="modal">
+                    @(Model != null && Model.IsComplete ? "خیر" : "بستن")
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

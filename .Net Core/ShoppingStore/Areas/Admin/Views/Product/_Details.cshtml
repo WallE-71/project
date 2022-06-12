@@ -1,0 +1,173 @@
+﻿@model ShoppingStore.Application.ViewModels.Product.ProductViewModel
+@using ShoppingStore.Domain.Common.Extensions;
+
+<style>
+    .modal-dialog {
+        max-width: 1100px !important;
+    }
+</style>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">جزئیات محصول</h3>
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix" style="max-height: 450px;overflow-y: auto;">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="card mb-2">
+                            <div class="card-header pt-2 pb-2 bg-cyan">تصویر محصول</div>
+                            <div class="card-body">
+                                <label class="cabinet center-block">
+                                    <span>
+                                        @if (Model.ImageName.HasValue())
+                                        {
+                                            <img src="~/images/@Model.ImageName" class="gambar img-responsive img-thumbnail" height="50" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/assets/img/R.png" class="gambar img-responsive img-thumbnail" height="50" />
+                                        }
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="card-header pt-2 pb-2 bg-cyan">وضعیت</div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <input asp-for="DisplayStates" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="card mb-2">
+                            <div class="card-header pt-2 pb-2 bg-cyan">
+                                نمایش تصاویر دیگر
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    @if (Model.ImageFiles.Count != 0)
+                                    {
+                                        @foreach (var item in Model.ImageFiles)
+                                        {
+                                            <li>
+                                                <img src="~/gallery/@item" class="gambar img-responsive img-thumbnail" height="30" />
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="form-group row">
+                            <div class="col-md-1">
+                                <label asp-for="Name" class="control-label"></label>
+                            </div>
+                            <div class="col-md-6">
+                                <input asp-for="Name" class="form-control" placeholder="نام محصول" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-3">
+                                <label class="control-label">تاریخ ساخت / عرضه</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input asp-for="PersianInsertDate" style="direction:ltr" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-2">
+                                <label asp-for="PersianExpirationDate" class="control-label"></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input asp-for="PersianExpirationDate" style="direction:ltr" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-1">
+                                <label asp-for="Price" class="control-label"></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input asp-for="Price" placeholder="ریال" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-1">
+                                <label asp-for="Stock" class="control-label"></label>
+                            </div>
+                            <div class="col-md-2">
+                                <input asp-for="Stock" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-2">
+                                <label asp-for="MadeIn" class="control-label"></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input asp-for="MadeIn" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label asp-for="Size" class="control-label"></label>
+                            </div>
+                            <div class="col-md-4">
+                                <input asp-for="Size" class="form-control" placeholder="عرض طول قطر" disabled />
+                            </div>
+                            <div class="col-md-1">
+                                <label asp-for="Weight" class="control-label"></label>
+                            </div>
+                            <div class="col-md-2">
+                                <input asp-for="Weight" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label class="control-label">رنگ اصلی</label>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <input type="text" asp-for="PrimaryColor" style="padding:9px; direction:ltr;" class="form-control input-lg" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label class="control-label">برند</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="brandtype" asp-for="NameOfBrand" class="form-control" disabled />
+                            </div>
+                            <div class="col-md-2">
+                                <label class="control-label">ضمانت/گارانتی</label>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" id="guaranteetype" asp-for="NameOfGuarantee" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label class="control-label">کد رنگ</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" id="colorstype" asp-for="NameOfColor" style="direction:ltr;" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label class="control-label">مواد / ترکیبات</label>
+                            </div>
+                            <div class="col-md-10">
+                                <input type="text" id="materialstype" asp-for="NameOfMaterial" class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-2">
+                                <label asp-for="Description" class="control-label"></label>
+                            </div>
+                            <textarea class="comment_area" style="width: 82%; padding: 5px;" asp-for="Description" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>

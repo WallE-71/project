@@ -1,0 +1,172 @@
+﻿@model ShoppingStore.Application.ViewModels.Cart.CartViewModel
+@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<div class="modal fade row mt-5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog card shadow w-100" style="min-width: 1100px;">
+        <div class="modal-content card-body">
+            <div class="modal-header">
+                <h3 id="modal-title">اطلاعات سبد خرید انتخابی</h3>
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix" style="max-height: 500px; overflow-y: auto;">
+                <div id="toolbar">
+                    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('CartItem', getIdSelections())" disabled>
+                        <i class="fa fa-trash"></i> | حذف گروهی
+                    </button>
+                </div>
+
+                <table id="table"
+                       data-toolbar="#toolbar"
+                       data-search="true"
+                       data-show-refresh="true"
+                       data-show-toggle="true"
+                       data-show-fullscreen="true"
+                       data-show-columns="true"
+                       data-detail-view="true"
+                       data-show-export="true"
+                       data-click-to-select="false"
+                       data-detail-formatter="detailFormatter"
+                       data-minimum-count-columns="2"
+                       data-show-pagination-switch="true"
+                       data-pagination="true"
+                       data-id-field="id"
+                       data-page-list="[10, 25, 50, 100, all]"
+                       data-show-footer="true"
+                       data-side-pagination="server"
+                       data-url="/Admin/CartItem/GetCartItems?cartId=@Model.Id"
+                       data-response-handler="responseHandler">
+                </table>
+
+                <script>
+                    var $table = $('#table');
+                    var $remove = $('#remove');
+                    var selections = []
+
+                    function get_query_params(p) {
+                        return {
+                            extraParam: 'abc',
+                            search: p.title,
+                            sort: p.sort,
+                            order: p.order,
+                            limit: p.limit,
+                            offset: p.offset
+                        }
+                    }
+
+                    function responseHandler(res) {
+                        $.each(res.rows, function (i, row) {
+                            row.state = $.inArray(row.id, selections) !== -1
+                        })
+                        return res
+                    }
+
+                    function getIdSelections() {
+                        return $.map($table.bootstrapTable('getSelections'), function (row) {
+                            return row.Id;
+                        });
+                    }
+
+                    function detailFormatter(index, row) {
+                        var html = []
+                        $.each(row, function (key, value) {
+                            if (key != "state" && key != "ردیف" && key != "Id" && key != "productId" && key != "images" && key != "name" && key != "insertTime" && key != "persianInsertTime" && key != "description" && key != "isComplete") {
+                                if (key == "product") key = 'محصول';
+                                if (key == "count") key = 'تعداد محصول';
+                                if (key == "price") key = 'قیمت روز';
+
+                                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+                            }
+                            if (key == "images") {
+                                key = 'تصویر محصول';
+                                var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/images/' + value;
+                                html.push('<p><b>' + key + ':</b> <img src="' + url + '" height="200" /></p>')
+                            }
+                        })
+                        return html.join('')
+                    }
+
+                    function operateFormatter(value, row, index) {
+                        var access = "";
+                        if ('@securityTrimmingService.CanUserAccess(User, "Admin", "CartItem", "Delete")' == 'True') {
+                            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "CartItem")/?cartItemId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button >';
+                        }
+                        return access;
+                    }
+
+                    function totalTextFormatter(data) {
+                        return 'تعداد'
+                    }
+
+                    function totalNameFormatter(data) {
+                        return data.length
+                    }
+
+                    function initTable() {
+                        $table.bootstrapTable('destroy').bootstrapTable({
+                            height: 600,
+                            locale: 'fa-IR',
+                            columns: [
+                            [{
+                                field: 'state',
+                                checkbox: true,
+                                rowspan: 2,
+                                align: 'center',
+                                valign: 'middle',
+                            }, {
+                                field: 'ردیف',
+                                title: 'ردیف',
+                                rowspan: 2,
+                                align: 'center',
+                                valign: 'middle',
+                                footerFormatter: totalTextFormatter
+                            }, {
+                                title: 'جزئیات محتوای سبد خرید',
+                                colspan: 4,
+                                align: 'center'
+                            }],
+                            [{
+                                field: 'product',
+                                title: 'محصول',
+                                sortable: true,
+                                align: 'center'
+                            },{
+                                field: 'count',
+                                title: 'تعداد محصول',
+                                sortable: true,
+                                align: 'center'
+                            },{
+                                field: 'price',
+                                title: 'قیمت روز',
+                                sortable: true,
+                                align: 'center'
+                            },{
+                                field: 'operate',
+                                title: 'عملیات',
+                                align: 'center',
+                                events: window.operateEvents,
+                                formatter: operateFormatter
+                            }]
+                            ]
+                        })
+
+                        $table.on('check.bs.table uncheck.bs.table ' +
+                            'check-all.bs.table uncheck-all.bs.table',
+                            function () {
+                                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                                selections = getIdSelections()
+                        })
+                    }
+
+                    $(function () {
+                        initTable()
+                        $('#locale').change(initTable)
+                    })
+                </script>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+        </div>
+    </div>
+</div>

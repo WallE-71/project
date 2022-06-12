@@ -1,0 +1,4 @@
+<mat-icon *ngFor="let i of maxRatingArr; let index = index" (mouseenter)="handleMouseEnter(index)"
+    (mouseleave)="handleMouseLeave()" (click)="Rate(index)" [ngClass]="{checked: selectedRate > index}">
+    <i class="fa fa-star"></i>
+</mat-icon>

@@ -1,0 +1,228 @@
+﻿@using ShoppingStore.Domain.Entities.Identity
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> signInManager
+@{
+    ViewData["Title"] = "Index";
+    Layout = "../Shared/_AdminLayout.cshtml";
+}
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/data.js"></script>
+<script src="https://code.highcharts.com/modules/drilldown.js"></script>
+
+<style>
+    .highcharts-root {
+        font-family: Vazir_Medium !important;
+    }
+
+    .highcharts-credits {
+        display: none !important;
+    }
+</style>
+
+<div id="modal-placeholder"></div>
+<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+    <div class="container-fluid">
+        <ul class="nav nav-sitemap justify-content-center justify-content-xl-end">
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="/Admin/Dashboard/Index"> داشبورد </a>
+            </li>
+        </ul>
+        @await Html.PartialAsync("_AdminLogin")
+    </div>
+</nav>
+<div class="header bg-gradient-primary pb-6 pt-5 pt-md-8"></div>
+
+<div class="container-fluid mt--7">
+    <div class="header-body">
+        <!-- Card stats -->
+        <div class="row">
+            <div class="col-xl-3 col-lg-6">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0">کاربران آنلاین</h5>
+                                @if (signInManager.IsSignedIn(User))
+                                {
+                                    <span class="online-count h2 mb-0 font_Vazir_FD"></span>
+                                }
+                                else
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD">0</span>
+                                }
+                            </div>
+                            <div class="col-auto">
+                                <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                                    <i class="fa fa-users"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0">مجموع فروش روزانه <small>ریال</small></h5>
+                                @if (!ViewBag.IsOffline)
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD" id="counter1">0</span>
+                                }
+                                else
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD"><small>@ViewBag.TodaySaleAmount</small></span>
+                                }
+                            </div>
+                            <div class="col-auto">
+                                <div class="icon icon-shape bg-success text-white rounded-circle shadow">
+                                    <i class="fa fa-database"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0">تعداد کل فروش ها</h5>
+                                @if (!ViewBag.IsOffline)
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD" id="counter2">0</span>
+                                }
+                                else
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD">@ViewBag.CountProductSale</span>
+                                }
+                            </div>
+                            <div class="col-auto">
+                                <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                    <i class="fas fa-grip-horizontal"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0">محصولات عرضه شده</h5>
+                                @if (!ViewBag.IsOffline)
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD" id="counter3">0</span>
+                                }
+                                else
+                                {
+                                    <span class="h2 mb-0 font_Vazir_FD">@ViewBag.ProductsPresentation</span>
+                                }
+                            </div>
+                            <div class="col-auto">
+                                <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                    <i class="fas fa-check"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="card shadow w-100">
+            <div class="card-header font_Vazir_Medium">
+                بازدیدهای محصولات عرضه شده در هر ماه
+            </div>
+            <div class="card-body">
+                <div id="container" style="min-width: 310px; margin: 0 auto"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="container" style="min-width: 310px; margin: 0 auto"></div>
+
+<script>
+    // Create the chart
+Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+
+    title: {
+        text: 'نمودار بازدیدهای محصولات عرضه شده در هر ماه'
+    },
+
+    xAxis: {
+        type: 'category'
+    },
+
+    yAxis: {
+        title: {
+            text: 'تعداد بازدید'
+        }
+    },
+
+    legend: {
+        enabled: false
+    },
+
+    plotOptions: {
+        series: {
+            borderWidth: 0,
+            dataLabels: {
+                enabled: true,
+                format: '{point.y}'
+            }
+        }
+    },
+
+    tooltip: {
+        headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
+        pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y}'
+    },
+
+    series: [
+        {
+            name: "ماه ها",
+            colorByPoint: true,
+            data: @Html.Raw(Json.Serialize(ViewBag.NumberOfVisitChart)),
+        }
+    ],
+});
+
+    var count1 = 0;
+    var counter1 = setTimeout(timer1, 130);
+    function timer1() {
+        count1 = count1 + 1;
+        if (count1 <= @ViewBag.TodaySaleAmount) {
+            document.getElementById("counter1").innerHTML = count1;
+            counter1 = setTimeout(timer1, 130);
+        }
+    }
+    var count2 = 0;
+    var counter2 = setTimeout(timer2, 200);
+    function timer2() {
+        count2 = count2 + 1;
+        if (count2 <= @ViewBag.CountProductSale) {
+            document.getElementById("counter2").innerHTML = count2;
+            counter2 = setTimeout(timer2, 200);
+        }
+    }
+    var count3 = 0;
+    var counter3 = setTimeout(timer3, 250);
+    function timer3() {
+        count3 = count3 + 1;
+        if (count3 <= @ViewBag.ProductsPresentation) {
+            document.getElementById("counter3").innerHTML = count3;
+            counter3 = setTimeout(timer3, 250);
+        }
+    }
+</script>

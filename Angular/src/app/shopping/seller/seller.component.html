@@ -1,0 +1,298 @@
+<section class="cart-home">
+    <form (submit)="RequestRegister()" [formGroup]="form" id="gform_1" class="c-form">
+        <div class="post-item-cart d-block order-2">
+            <div class="content-page">
+                <div class="cart-collaterals" style="min-height: 1080px;">
+                    <div class="totals d-block">
+                        <div class="row" style="min-width: 700px;">
+                            <div class="col-md-3 col-sm-4" id="nav-items-profile">
+                                <div class="card mb-3">
+                                    <div class="card-header pt-2 pb-2 bg-light">بارگذاری تصویر ۳*۴ یا پرسنلی</div>
+                                    <div class="card-body">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="height: 165px;">
+                                                <img src="/assets/images/R.png" height="165"/>
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="height: 165px;"> </div>
+                                            <div>
+                                                <span class="btn default btn-file">
+                                                    <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                    <span class="fileinput-exists btn btn-default" style="background-color: rgb(247, 187, 35);"> تغییر عکس </span>
+                                                    <input type="file" formControlName="imageFile" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                                </span>
+                                                <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-3">
+                                    <div class="card-header pt-2 pb-2 bg-light">بارگذاری اسکن کارت ملی</div>
+                                    <div class="card-body">
+                                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                                            <div class="fileinput-new thumbnail" style="height: 165px;">
+                                                <img src="/assets/images/R.png" height="165"/>
+                                            </div>
+                                            <div class="fileinput-preview fileinput-exists thumbnail" style="height: 165px;"> </div>
+                                            <div>
+                                                <span class="btn default btn-file">
+                                                    <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                    <span class="fileinput-exists btn btn-default" style="background-color: rgb(247, 187, 35);"> تغییر عکس </span>
+                                                    <input type="file" formControlName="scanNationalIdCart" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" />
+                                                </span>
+                                                <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card mb-3">
+                                    <div class="card-header pt-2 pb-2 bg-light">بارگذاری اسکن سند فروشگاه یا شرکت</div>
+                                    <div class="card-body">
+                                        <label class="cabinet center-block">
+                                            <div class="container mt-5 text-center">
+                                                <h3 class="mb-5">Angular Image Crop Example</h3>
+                                                <div class="col-md-12">
+                                                  <input type="file" formControlName="scanDocument" (change)="onFileChange($event)" />
+                                                </div>
+                                                <div class="col-md-8">
+                                                  <image-cropper 
+                                                    [imageChangedEvent]="imgChangeEvt" 
+                                                    [maintainAspectRatio]="true" 
+                                                    [aspectRatio]="4 / 4"
+                                                    [resizeToWidth]="256" 
+                                                    format="jpeg" 
+                                                    (imageCropped)="cropImg($event)" 
+                                                    (imageLoaded)="imgLoad()"
+                                                    (cropperReady)="initCropper()" 
+                                                    (loadImageFailed)="imgFailed()">
+                                                  </image-cropper>
+                                                </div>
+                                                <div class="col-md-4">
+                                                  <h6>Image Preview</h6>
+                                                  <img [src]="cropImgPreview" src="/assets/images/R.png" />
+                                                </div>
+                                            </div>
+                                            <!-- <span>
+                                                <img src="/assets/images/R.png"
+                                                    class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                <input type="hidden" formControlName="scanDocument" id="base64" />
+                                                <a class="btn btn-success btn-sm btn-block mt-2 text-white">
+                                                    <span><i class="fa fa-camera"></i></span> انتخاب کنید ...
+                                                </a>
+                                            </span>
+                                            <input type="file" class="item-img file-primary center-block" name="file_photo" /> -->
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9 col-sm-4">
+                                <div class="card-header pt-2 pb-2 bg-light">اطلاعات فروشنده,تولید کننده, فروشگاه, شرکت و...</div>
+                                <div class="card-body">
+                                    <div id="about" style="margin-top: 30px;" class="tab-pane fade show active">
+                                        <div class="card card-signup">
+                                            <div class="content" style="background-color:white !important; ">
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-user-circle-o"></i>نام
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-3"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="name" aria-required="true"
+                                                        aria-invalid="false" />
+
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 70px;">
+                                                        <i class="fa fa-user-circle"></i>نام خانوادگی
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-3"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="surName" aria-required="true"
+                                                        aria-invalid="false" />
+                                                </div>
+                                                <br />
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-user-circle-o"></i>کد ملی ده رقمی
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-3"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="nationalId" aria-required="true"
+                                                        aria-invalid="false" />
+
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 70px;">
+                                                        <i class="fa fa-phone"></i>شماره موبایل
+                                                    </span>
+                                                    <input type="number" class="form-control col-md-3"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="phoneNumber" aria-required="true"
+                                                        aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-envelope"></i>ایمیل
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-6"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="email" aria-required="true"
+                                                        aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-user-circle"></i>نام برند (اختیاری)
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-5"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="brand" aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-3"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-user-circle-o"></i>وب سایت (اختیاری)
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-5"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="webSite" aria-invalid="false" />
+                                                </div>
+                                                <br />
+                                                <div class="form-group row">
+                                                    <label style="margin-right: 20px;">
+                                                        نوع فعالیت شما
+                                                        <span>
+                                                            <span>*</span>
+                                                        </span>
+                                                    </label>
+                                                    <div>ممکن است هر سه گزینه شامل فعالیت شما بشود، در این صورت هر سه
+                                                        گزینه را انتخاب
+                                                        کنید.</div>
+                                                    <div>
+                                                        <ul>
+                                                            <li>
+                                                                <input type=checkbox>
+                                                                <label for="select_all" id="select_all"
+                                                                    data-label-select="انتخاب کردن همه"
+                                                                    data-label-deselect="انتخاب نکردن همه">
+                                                                    انتخاب کردن همه</label>
+                                                            </li>
+                                                            <li>
+                                                                <input formControlName="activityType" type="checkbox"
+                                                                    value="1" id="1" checked>
+                                                                <label for="label1" id="label1">فروشنده</label>
+                                                            </li>
+                                                            <li>
+                                                                <input formControlName="activityType" type="checkbox"
+                                                                    value="2" id="2">
+                                                                <label for=label2 id="label2">تولید کننده</label>
+                                                            </li>
+                                                            <li>
+                                                                <input formControlName="activityType" type="checkbox"
+                                                                    value="3" id="3">
+                                                                <label for="label3" id="label3">وارد کننده</label>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <br />
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-3"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-user-circle"></i>نام فروشگاه یا شرکت
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-6"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="store" aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-3"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-phone"></i>شماره ثابت محل کار
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-3"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="telNumber" aria-invalid="false" />
+
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 10px;">
+                                                        <i class="fa fa-envelope"></i>کد پستی
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-3"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="postalCode" aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-envelope"></i>تاریخ تاسیس
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-4"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="establishmentDate" aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <span class="input-group-addon col-md-2"
+                                                        style="margin-right: 20px;">
+                                                        <i class="fa fa-envelope"></i>آدرس
+                                                    </span>
+                                                    <input type="text" class="form-control col-md-9"
+                                                        style="border-radius: 10px; text-align: center;"
+                                                        formControlName="address" aria-invalid="false" />
+                                                </div>
+                                                <div class="form-group row">
+                                                    <textarea
+                                                        style="margin-right: 20px;min-width: 1000px; background-color:mintcream;"
+                                                        class="comment-textarea"
+                                                        placeholder="اگر تولید کننده هستید نام چند نمونه از محصولات موجود خود را وارد نمایید ..."
+                                                        matInput formControlName="sampleProduct"
+                                                        aria-invalid="false"></textarea>
+                                                </div>
+                                                <br />
+                                                <div class="form-group row">
+                                                    <textarea
+                                                        style=" margin-right: 20px;min-width: 600px; background-color:mintcream;"
+                                                        class="comment-textarea" placeholder="توضیحات بیشتر ..."
+                                                        matInput formControlName="description"
+                                                        aria-invalid="false"></textarea>
+                                                </div>
+                                                <div class="footer">
+                                                    <button mat-flat-button
+                                                        class="btn btn-simple btn-success btn-lg text-blue"
+                                                        style="float: left; padding: 4px 15px;font-size: 13px;">
+                                                        ارسال
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    تصویر اسکن سند فروشگاه یا شرکت
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="upload-demo" class="center-block"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">بستن</button>
+                <button type="button" id="cropImageBtn" class="btn btn-sm btn-primary mr-2">برش</button>
+            </div>
+        </div>
+    </div>
+</div>

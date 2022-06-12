@@ -1,0 +1,97 @@
+﻿@model ShoppingStore.Application.ViewModels.MessageUser.MessageUsersViewModel
+@using ShoppingStore.Domain.Entities;
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                @if (Model.Id != null)
+                {
+                    <h3 id="modal-title">پاسخ به پیام دریافتی</h3>
+                }
+                else
+                {
+                    <h3 id="modal-title">پیامی یافت نشد!</h3>
+                }
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix">
+                <form asp-action="AnswerMessage">
+                    @if (ViewData.ModelState.IsValid.ToString() == "False")
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    }
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label asp-for="Messages" class="control-label"></label>
+                        </div>
+                        <div class="col-md-9">
+                            <div class="row">
+                                @if (Model.Messages == MessageType.Tiket)
+                                {
+                                    <label class="custom-control-label">تیکت</label>
+                                }
+                                else if (Model.Messages == MessageType.RequestRegister)
+                                {
+                                    <label class="custom-control-label">درخواست عضویت بعنوان فروشنده‌</label>
+                                }
+                                else if (Model.Messages == MessageType.FeedbackOffers)
+                                {
+                                    <label class="custom-control-label">انتقادات و پیشنهادات</label>
+                                }
+                                else if (Model.Messages == MessageType.Questions)
+                                {
+                                    <label class="custom-control-label">سوالات</label>
+                                }
+                            </div>
+                            <span asp-validation-for="Messages" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label class="control-label">ایمیل کاربر</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input asp-for="Email" class="form-control" disabled />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-4">
+                            <label class="control-label">پیام دریافتی</label>
+                        </div>
+                        <div class="col-md-8">
+                            <textarea asp-for="Description" class="form-control" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="row p-2 mt-2 mb-2">
+                        <div class="form-group row">
+                            <div class="col-md-4">
+                                <label class="control-label">پاسخ به پیام دریافتی</label>
+                            </div>
+                            <div class="col-md-8">
+                                <textarea asp-for="Answer" class="form-control"></textarea>
+                                <span asp-validation-for="Answer" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                @if (Model.Id != null)
+                {
+                    <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                        ذخیره تغییرات
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+                }
+            </div>
+        </div>
+    </div>
+</div>

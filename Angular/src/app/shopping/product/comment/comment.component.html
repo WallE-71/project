@@ -1,0 +1,138 @@
+<style>
+    .post-meta.d-flex a i {
+        font-size: 15px !important;
+    }
+</style>
+
+<section class="post-details-area mb-80">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="cul-12 col-lg-9 col-xl-8">
+                <div class="post-details-content">
+                    <div class="blog-content">
+                        <div class="comment_area clearfix mb-50">
+                            <div class="section-heading style-2">
+                                <h4>نظرات</h4>
+                                <div class="line"></div>
+                            </div>
+                            <ul *ngIf="productComments?.length != 0">
+
+                                <!-- <mat-tree [dataSource]="productComments" [treeControl]="treeControl" class="example-tree">
+                                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+                                      <li class="mat-tree-node">
+                                        <button mat-icon-button disabled></button>
+                                        {{node.name}}
+                                      </li>
+                                    </mat-tree-node>
+                                    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+                                      <li>
+                                        <div class="mat-tree-node">
+                                          <button mat-icon-button matTreeNodeToggle
+                                                  [attr.aria-label]="'toggle ' + node.name">
+                                            <mat-icon class="mat-icon-rtl-mirror">
+                                              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                                            </mat-icon>
+                                          </button>
+                                          {{node.name}}
+                                        </div>
+                                        <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                                          <ng-container matTreeNodeOutlet></ng-container>
+                                        </ul>
+                                      </li>
+                                    </mat-nested-tree-node>
+                                  </mat-tree> -->
+
+
+
+
+                                  <!-- <ng-container *ngFor="let comment of productComments" class="single_comment_area">
+
+                                  </ng-container> -->
+
+
+
+                                <li *ngFor="let comment of productComments" class="single_comment_area">
+                                    <div id="comment-{{comment.Id}}" class="comment-content d-flex">
+                                        <div class="comment-author">
+                                            <img src="/assets/images/profile.png" style="max-height: 60px;"
+                                                alt="نویسنده">
+                                        </div>
+                                        <div class="comment-meta">
+                                            <a href="#" class="comment-date">{{comment.persianInsertTime}}</a>
+                                            <span class="d-flex justify-content-between mb-30">
+                                                <div class="post-meta d-flex">
+                                                    <a style="white-space: pre;" (click)="LikeOrDisLike(comment.Id, true)"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span style="white-space: pre;" #commentlike id="commentlike"> {{comment.numberOfLike}} </span></a>
+                                                    <a style="white-space: pre;" (click)="LikeOrDisLike(comment.Id, false)"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> <span style="white-space: pre;" #commentdislike id="commentdislike"> {{comment.numberOfDisLike}} </span></a>
+                                                </div>
+                                            </span>
+                                            <h6>{{comment.name}}</h6>
+                                            <p>{{comment.description}}</p>
+                                            <div class="d-flex align-items-center">
+                                                <mat-accordion>
+                                                    <mat-expansion-panel (opened)="panelOpenState = true"
+                                                                         (closed)="panelOpenState = false">
+                                                        <mat-expansion-panel-header>
+                                                            <mat-panel-title class="reply" style="max-width: 50px;">
+                                                                {{ panelOpenState ? 'لغو' : 'پاسخ' }}
+                                                            </mat-panel-title>
+                                                        </mat-expansion-panel-header>
+                                                        <app-send-comment [ParentCommentId]="comment.Id" [ProductId]="comment.productId"></app-send-comment>
+                                                    </mat-expansion-panel>
+                                                </mat-accordion>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <ul *ngIf="comment?.subComments?.length != 0" class="children">
+                                        <li *ngFor="let sub of comment.subComments" class="single_comment_area">
+                                            <div id="comment-+{{sub.id}}" class="comment-content d-flex">
+                                                <div class="comment-author">
+                                                    <img src="/assets/images/man-avatar.png" style="max-height: 60px;"
+                                                        alt="پاسخ دهنده">
+                                                </div>
+                                                <div class="comment-meta">
+                                                    <a href="#" class="comment-date">{{sub.persianInsertTime}}</a>
+                                                    <span class="d-flex justify-content-between mb-30">
+                                                        <div class="post-meta d-flex">
+                                                            <a style="white-space: pre;" (click)="LikeOrDisLikeOfSubComments(sub.Id, true)"><i class="fa fa-thumbs-o-up" aria-hidden="true"></i> <span style="white-space: pre;" #sublike id="sublike+{{sub.Id}}"> {{sub.numberOfLike}} </span></a>
+                                                            <a style="white-space: pre;" (click)="LikeOrDisLikeOfSubComments(sub.Id, false)"><i class="fa fa-thumbs-o-down" aria-hidden="true"></i> <span style="white-space: pre;" #subdislike id="subdislike+{{sub.Id}}"> {{sub.numberOfDisLike}} </span></a>
+                                                        </div>
+                                                    </span>
+                                                    <h6>{{sub.name}}</h6>
+                                                    <p>{{sub.description}}</p>
+                                                    <div class="d-flex align-items-center">
+                                                        <mat-accordion>
+                                                            <mat-expansion-panel (opened)="subPanelOpenState = true"
+                                                                                 (closed)="subPanelOpenState = false">
+                                                                <mat-expansion-panel-header>
+                                                                    <mat-panel-title class="reply" style="max-width: 50px;">
+                                                                        {{ subPanelOpenState ? 'لغو' : 'پاسخ' }}
+                                                                    </mat-panel-title>
+                                                                </mat-expansion-panel-header>
+                                                                <app-send-comment [ParentCommentId]="sub.Id" [ProductId]="comment.productId"></app-send-comment>
+                                                            </mat-expansion-panel>
+                                                        </mat-accordion>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <app-sub-comments *ngIf="sub?.subComments?.length != 0" [subComments]="sub?.subComments"></app-sub-comments>                                   
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <p *ngIf="productComments.length == 0" class="alert alert-info mb-0">دیدگاهی برای این محصول
+                                ارسال نشده است.</p>
+                        </div>
+                        <div class="post-a-comment-area">
+                            <div class="section-heading style-2">
+                                <br/> 
+                                <h4>ارسال دیدگاه</h4>
+                                <div class="line"></div>
+                                <app-send-comment [ProductId]="ProductId"></app-send-comment>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

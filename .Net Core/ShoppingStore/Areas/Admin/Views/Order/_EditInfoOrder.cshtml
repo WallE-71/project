@@ -1,0 +1,109 @@
+﻿@model ShoppingStore.Application.ViewModels.Order.OrderViewModel
+@using ShoppingStore.Domain.Entities;
+
+<style>
+    .modal-dialog {
+        max-width: 800px !important;
+    }
+</style>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">ویرایش وضعیت سفارش</h3>
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix" style="max-height: 450px;overflow-y: auto;">
+                <form asp-action="EditInfoOrder">
+                    @if (ViewData.ModelState.IsValid.ToString() == "False")
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4"></div>
+                    }
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <input type="hidden" asp-for="Id" />
+                    <div class="row mt-2 mb-2">
+                        <div class="col-md-12" style="display: inline-flex;">
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label asp-for="RequestPayId" class="control-label"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="RequestPayId" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="PersianInsertTime" class="control-label"></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input asp-for="PersianInsertTime" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="display: inline-flex;">
+                            <div class="form-group row">
+                                <div class="col-md-5">
+                                    <label asp-for="StringAmountPaid" class="control-label"></label>
+                                </div>
+                                <div class="col-md-7">
+                                    <input asp-for="StringAmountPaid" placeholder="ریال" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="StringQuantity" class="control-label"></label>
+                                </div>
+                                <div class="col-md-5">
+                                    <input asp-for="StringQuantity" class="form-control" disabled />
+                                </div>
+                            </div>                           
+                        </div>
+                        <div class="col-md-12" style="display: inline-flex;">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="ProductName" class="control-label"></label>
+                                </div>
+                                <div class="col-md-8">
+                                    <input asp-for="ProductName" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row col-md-12">
+                        <div class="col-md-2">
+                            <label asp-for="OrderState" class="control-label"></label>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row">
+                                <div class="col-md-3 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Processing" class="custom-control-input" id="customRadio1" type="radio">
+                                    <label class="custom-control-label" for="customRadio1">در حال پردازش</label>
+                                </div>
+                                <div class="col-md-3 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Confirmed" class="custom-control-input" id="customRadio2" type="radio">
+                                    <label class="custom-control-label" for="customRadio2">تایید شده</label>
+                                </div>
+                                <div class="col-md-3 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Transmission" class="custom-control-input" id="customRadio3" type="radio">
+                                    <label class="custom-control-label" for="customRadio3">در حال ارسال</label>
+                                </div>
+                                <div class="col-md-3 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Delivered" class="custom-control-input" id="customRadio4" type="radio">
+                                    <label class="custom-control-label" for="customRadio4">تحویل داده شد</label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="OrderState" class="text-danger"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                    ذخیره تغییرات
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

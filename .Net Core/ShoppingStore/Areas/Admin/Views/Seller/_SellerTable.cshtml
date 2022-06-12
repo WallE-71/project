@@ -1,0 +1,205 @@
+﻿@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<div id="toolbar">
+    <a class="btn btn-success text-white" asp-action="CreateOrUpdate">
+        <i class="fa fa-plus"></i> | افزودن فروشنده جدید
+    </a>
+    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('Seller', getIdSelections())" disabled>
+        <i class="fa fa-trash"></i> | حذف گروهی
+    </button>
+</div>
+<table id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-fullscreen="true"
+       data-show-columns="true"
+       data-show-columns-toggle-all="true"
+       data-detail-view="true"
+       data-show-export="true"
+       data-click-to-select="false"
+       data-detail-formatter="detailFormatter"
+       data-minimum-count-columns="2"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-id-field="id"
+       data-page-list="[10, 25, 50, 100, all]"
+       data-show-footer="true"
+       data-side-pagination="server"
+       data-url="/Admin/Seller/GetSellers"
+       data-response-handler="responseHandler">
+</table>
+
+<script>
+    var $table = $('#table');
+    var $remove = $('#remove');
+    var selections = []
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.Id;
+        });
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "ردیف" && key != "insertTime" && key != "store" && key != "isComplete" && key != "registerDate" && key != "numberOfProduct" && key != "sellerImage" && key != "products" && key != "sellerImage" && key != "nationalIdImage" && key != "documentImage" && key != "sampleProduct" && key != "establishmentDate" && key != "healthBarcodeImage" && key != "isConfirmDocuments") {
+                if (key == "name") key = 'نام';
+                if (key == "email") key = 'ایمیل';
+                if (key == "address") key = 'آدزس';
+                if (key == "userVote") key = 'رتبه';
+                if (key == "brand") key = 'نام برند';
+                if (key == "webSite") key = 'وب سایت';
+                if (key == "nationalId") key = 'کد ملی';
+                if (key == "postalCode") key = 'کد پستی';
+                if (key == "description") key = 'توضیحات';
+                if (key == "surName") key = 'نام خانوادگی';
+                if (key == "activityType") key = 'نوع فعالیت';
+                if (key == "phonNumber") key = 'شماره موبایل';
+                if (key == "telNumber") key = 'شماره ثابت محل کار';
+                if (key == "numberOfProducts") key = 'تعداد محصولات';
+                if (key == "storeName") key = 'نام فروشگاه یا شرکت';
+                if (key == "persianRegisterDate") key = 'تاریخ عضویت';
+                if (key == "persianInsertTime") key = 'تاریخ ثبت نام';
+                if (key == "persianEstablishmentDate") key = 'تاریخ تاسیس';
+
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Seller", "CreateOrUpdate")' == 'True') {
+            access = access + '<a class="text-success" href="/Admin/Seller/CreateOrUpdate?sellerId=' + row.Id + '" title="ویرایش"><i class="fa fa-edit"></i></a>';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Seller", "Delete")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Seller")/?sellerId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button >';
+        }
+        return access;
+    }
+
+    function selectProductsFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Seller", "ProductsOfSeller")' == 'True' && row.isComplete == true) {
+            access = access + '<a href="/Admin/Seller/ProductsOfSeller?sellerId=' + row.Id + '&isSeller=' + false + '" class="btn btn-primary btn-sm text-white">' + row.numberOfProducts + ' <i class="fas fa-barcode mr-1"></i></a >';
+        }
+        else {
+            access = access + '<a href="" class="btn btn-primary btn-sm text-white">' + row.numberOfProducts + ' <i class="fas fa-barcode mr-1"></i></a >';
+        }
+        return [ access ].join('')
+    }
+
+    function registerFormatter(value, row, index) {
+        var attr = "";
+        if (row.isComplete == true) {
+            attr = "checked";
+        }
+        return [
+            '<label class="custom-toggle mb-0"> <input type="checkbox" onclick="IsRegisterOrNotRegister(' + "'" + row.Id + "'" + ')" id="' + row.Id + '" ' + attr + ' /><span class="custom-toggle-slider rounded-circle"></span></label>'
+        ].join('')
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 600,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                },{
+                    title: 'ردیف',
+                    field: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                },{
+                    title: 'جزئیات اطلاعات فروشندگان',
+                    colspan: 6,
+                    align: 'center'
+                }],
+                [{
+                    field: 'store',
+                    title: 'فروشنده',
+                    sortable: true,
+                    align: 'center',
+                    footerFormatter: totalNameFormatter
+                },{
+                    field: 'userVote',
+                    title: 'رتبه',
+                    sortable: false,
+                    align: 'center'
+                },{
+                    field: '',
+                    title: 'محصولات',
+                    sortable: false,
+                    align: 'center',
+                    formatter: selectProductsFormatter
+                },{
+                    field: 'persianRegisterDate',
+                    title: 'تاریخ عضویت',
+                    sortable: true,
+                    align: 'center'
+                }, {
+                    field: 'isComplete',
+                    title: 'تایید عضویت',
+                    sortable: true,
+                    align: 'center',
+                    formatter: registerFormatter
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+        })
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+</script>

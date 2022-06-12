@@ -1,0 +1,89 @@
+<section class="cart-home">
+    <div class="post-item-cart d-block order-2">
+        <div class="content-page">
+            <div class="cart-collaterals">
+                <div class="totals d-block">
+                    <!-- Navbar section -->
+                    <div class="d-flex flex-row" style="float:left">
+                        <div class="text-muted m-2" id="res">نمایش {{products?.length}} محصول</div>
+                        <div class="ml-auto mr-lg-4">
+                            <div id="sorting" class="border rounded p-1 m-1">
+                                <select (change)="GetProductInCategoryByFilter(valueFilter=$any($event.target).value, 0)" name="sort" id="sort">
+                                    <option class="text-muted" value="0"><b>مرتب سازی</b></option>
+                                    <option value="1"><b>با بیشترین تخفیف</b></option>
+                                    <option value="2"><b>با گرانترین قیمت</b></option>
+                                    <option value="3"><b>با ارزانترین قیمت</b></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sidebar filter section -->
+                    <section id="sidebar">
+                        <p>
+                            <a href="/">صفحه نخست</a> | <b><a *ngFor="let parent of subCategories"
+                                    href="/category/{{parent.title}}">{{parent.title}}</a></b>
+                        </p>
+                        <hr id="burgundy" />
+                        <div class="border-bottom pb-2 ml-2">
+                            <h4 id="burgundy">دسته بندی محصولات</h4>
+                        </div>
+                        <div class="py-2 border-bottom ml-3">
+                            <form *ngFor="let parent of subCategories">
+                                <div class="form-group"> <label for="artisan"><button
+                                            style="background-color: transparent;"
+                                            (click)="GetProductInCategory(parent.title)" #pillActive id="pill-active"
+                                            autoclick>{{parent.title}}</button></label>
+                                </div>
+                                <hr style="background-color: tomato; max-width: 60px;" />
+                                <ul *ngFor="let subs of parent.subs" class="form-group">
+                                    <label for="artisan"><button style="background-color: transparent;"
+                                            (click)="GetProductInCategory(subs.title)">{{subs.title}}</button></label>
+                                </ul>
+                            </form>
+                        </div>
+                        <div class="py-2 ml-3">
+                            <h6 class="font-weight-bold">بالاترین تخفیف ها</h6>
+                            <div id="orange"><span class="fa fa-minus"></span></div>
+                            <mat-radio-group (change)="GetProductInCategoryByFilter(0, valueFilter=$any($event).value)"  aria-label="Select an option">
+                                <div><mat-radio-button value="1" style="margin-right: 3%;">{{discountType}}</mat-radio-button></div>
+                                <div><mat-radio-button value="2" style="margin-right: 3%;">بدون تخفیف</mat-radio-button></div>
+                            </mat-radio-group>
+                        </div>
+                    </section>
+                    <!-- products section -->
+                    <section id="products">
+                        <div class="container">
+                            <div class="row">
+                                <div *ngFor="let product of products"
+                                    class="col-lg-4 col-md-6 col-sm-10 offset-md-0 offset-sm-1">
+                                    <div class="card">
+                                        <a (click)="Details(product.Id)" class="d-block hover-img-link">
+                                            <img class="card-img-top"
+                                                src="../assets/images/product/{{product.imageName}}" />
+                                        </a>
+                                        <div class="card-body">
+                                            <h5><a>{{product.name}}</a> </h5>
+                                            <div class="d-flex flex-row my-2">
+                                                <div class="price" *ngIf="product.actionDiscount == 0">
+                                                    <ins><span>{{product.price}}<span> <small>ریال</small> 
+                                                            </span></span></ins>
+                                                </div>
+                                                <div class="price" *ngIf="product.actionDiscount != 0">
+                                                    <del><span>{{product.price}}<span> <small>ریال</small> 
+                                                            </span></span></del>
+                                                    <ins><span>{{product.actionDiscount}}<span> <small>ریال</small> 
+                                                            </span></span></ins>
+                                                </div>
+                                            </div> <button (click)="AddToCart(product.Id)"
+                                                class="btn w-100 rounded my-2">افزودن به سبد خرید</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

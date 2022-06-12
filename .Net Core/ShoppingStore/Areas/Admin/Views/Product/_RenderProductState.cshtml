@@ -1,0 +1,70 @@
+﻿@model ShoppingStore.Application.ViewModels.Product.ProductViewModel
+@using ShoppingStore.Domain.Entities
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">ویرایش وضعیت محصول</h3>
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix">
+                <form asp-action="ChangeProductState">
+                    @if (ViewData.ModelState.IsValid.ToString() == "False")
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    }
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.Demo" class="custom-control-input" id="customRadio1" type="radio">
+                                    <label class="custom-control-label" for="customRadio1">دمو</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.Stockroom" class="custom-control-input" id="customRadio2" type="radio">
+                                    <label class="custom-control-label" for="customRadio2">در انبار</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.Ready" class="custom-control-input" id="customRadio3" type="radio">
+                                    <label class="custom-control-label" for="customRadio3">آماده عرضه</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.EndOfStock" class="custom-control-input" id="customRadio4" type="radio">
+                                    <label class="custom-control-label" for="customRadio4">موجود نیست</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.ExpirationEnd" class="custom-control-input" id="customRadio5" type="radio">
+                                    <label class="custom-control-label" for="customRadio5">منقضی شده</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.Returned" class="custom-control-input" id="customRadio6" type="radio">
+                                    <label class="custom-control-label" for="customRadio6">مرجوع شده</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.Corrupted" class="custom-control-input" id="customRadio7" type="radio">
+                                    <label class="custom-control-label" for="customRadio7">آسیب دیده</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="States" value="@ProductState.CoomingSoon" class="custom-control-input" id="customRadio8" type="radio">
+                                    <label class="custom-control-label" for="customRadio8">بزودی</label>
+                                </div>
+                            </div>
+                            <span asp-validation-for="States" class="text-danger"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                    ذخیره تغییرات
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

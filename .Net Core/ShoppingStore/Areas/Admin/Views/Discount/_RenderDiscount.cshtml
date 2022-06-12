@@ -1,0 +1,98 @@
+﻿@model ShoppingStore.Application.ViewModels.Product.DiscountViewModel
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                اعمال تخفیف
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix">
+                <form asp-action="InsertOrUpdateDiscount">
+                    @if (ViewData.ModelState.IsValid.ToString() == "False")
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    }
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <input type="hidden" asp-for="ProductId" />
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="Percent" class="control-label"></label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="number" asp-for="Percent" class="form-control" />
+                                    <span asp-validation-for="Percent" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="PersianStartDate" class="control-label"></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text cursor-pointer" id="PersianStartDate">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input asp-for="PersianStartDate" class="form-control" id="InputPersianStartDate" style="direction:ltr" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="PersianStartDate" class="text-danger"></span>
+                            </div>
+                            <script>
+                                $("#PersianStartDate").MdPersianDateTimePicker({
+                                    targetTextSelector: "#InputPersianStartDate",
+                                    placement: 'top',
+                                });
+                            </script>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="PersianEndDate" class="control-label"></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text cursor-pointer" id="PersianEndDate">
+                                                <i class="fa fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input asp-for="PersianEndDate" class="form-control" id="InputPersianEndDate" style="direction:ltr" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="PersianEndDate" class="text-danger"></span>
+                            </div>
+                            <script>
+                                $("#PersianEndDate").MdPersianDateTimePicker({
+                                    targetTextSelector: "#InputPersianEndDate",
+                                    placement: 'top',
+                                });
+                            </script>
+                            <div class="form-group row">
+                                <div class="col-md-3">
+                                    <label asp-for="DiscountCode" class="control-label"></label>
+                                </div>
+                                <div class="col-md-9">
+                                    <input asp-for="DiscountCode" class="form-control" />
+                                    <span asp-validation-for="DiscountCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                    اعمال تخفیف
+                </button>
+                <button type="button"  onclick="DeleteDiscount('@Model.ProductId')" title="حذف" class="btn btn-sm btn-labeled btn-danger">
+                    حذف تخفیف
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

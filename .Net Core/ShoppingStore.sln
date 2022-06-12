@@ -1,0 +1,86 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3345225B-0063-4A04-AA2A-17DCE5FC6B0E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ui", "ui", "{8931A75E-65F4-42D3-ACE6-913A01817E22}"
+EndProject
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Angular", "..\Angular\", "{AF1239B5-A8E6-4C9E-A6E1-C3C3DB4588EA}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_52094"
+		Debug.AspNetCompiler.PhysicalPath = "..\Angular\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52094\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_52094"
+		Release.AspNetCompiler.PhysicalPath = "..\Angular\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52094\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "52094"
+		SlnRelativePath = "..\Angular\"
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingStore", "ShoppingStore\ShoppingStore.csproj", "{526781D1-8444-43CA-BAF5-980B1671F2A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingStore.Application", "ShoppingStore.Application\ShoppingStore.Application.csproj", "{090E51EE-EE70-406D-95CF-15FA67D5632B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingStore.Domain", "ShoppingStore.Domain\ShoppingStore.Domain.csproj", "{3AD8E1B6-1687-4647-996F-C51686374E5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingStore.Infrastructure", "ShoppingStore.Infrastructure\ShoppingStore.Infrastructure.csproj", "{1291C939-C752-4767-BE05-219CA482194C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingStore.Persistence", "ShoppingStore.Persistence\ShoppingStore.Persistence.csproj", "{B5A099C1-9825-40FB-B7AF-CFE758B109DD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AF1239B5-A8E6-4C9E-A6E1-C3C3DB4588EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF1239B5-A8E6-4C9E-A6E1-C3C3DB4588EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF1239B5-A8E6-4C9E-A6E1-C3C3DB4588EA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF1239B5-A8E6-4C9E-A6E1-C3C3DB4588EA}.Release|Any CPU.Build.0 = Debug|Any CPU
+		{526781D1-8444-43CA-BAF5-980B1671F2A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{526781D1-8444-43CA-BAF5-980B1671F2A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{526781D1-8444-43CA-BAF5-980B1671F2A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{526781D1-8444-43CA-BAF5-980B1671F2A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{090E51EE-EE70-406D-95CF-15FA67D5632B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{090E51EE-EE70-406D-95CF-15FA67D5632B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{090E51EE-EE70-406D-95CF-15FA67D5632B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{090E51EE-EE70-406D-95CF-15FA67D5632B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AD8E1B6-1687-4647-996F-C51686374E5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AD8E1B6-1687-4647-996F-C51686374E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AD8E1B6-1687-4647-996F-C51686374E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AD8E1B6-1687-4647-996F-C51686374E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1291C939-C752-4767-BE05-219CA482194C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1291C939-C752-4767-BE05-219CA482194C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1291C939-C752-4767-BE05-219CA482194C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1291C939-C752-4767-BE05-219CA482194C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5A099C1-9825-40FB-B7AF-CFE758B109DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5A099C1-9825-40FB-B7AF-CFE758B109DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5A099C1-9825-40FB-B7AF-CFE758B109DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5A099C1-9825-40FB-B7AF-CFE758B109DD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{AF1239B5-A8E6-4C9E-A6E1-C3C3DB4588EA} = {8931A75E-65F4-42D3-ACE6-913A01817E22}
+		{526781D1-8444-43CA-BAF5-980B1671F2A9} = {3345225B-0063-4A04-AA2A-17DCE5FC6B0E}
+		{090E51EE-EE70-406D-95CF-15FA67D5632B} = {3345225B-0063-4A04-AA2A-17DCE5FC6B0E}
+		{3AD8E1B6-1687-4647-996F-C51686374E5B} = {3345225B-0063-4A04-AA2A-17DCE5FC6B0E}
+		{1291C939-C752-4767-BE05-219CA482194C} = {3345225B-0063-4A04-AA2A-17DCE5FC6B0E}
+		{B5A099C1-9825-40FB-B7AF-CFE758B109DD} = {3345225B-0063-4A04-AA2A-17DCE5FC6B0E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6EEFD167-97F2-4CAE-935A-A13AACF41C12}
+	EndGlobalSection
+EndGlobal

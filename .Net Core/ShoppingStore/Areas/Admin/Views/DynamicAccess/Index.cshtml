@@ -1,0 +1,175 @@
+﻿@model ShoppingStore.Application.ViewModels.DynamicAccess.DynamicAccessIndexViewModel
+@using ShoppingStore.Application.ViewModels.DynamicAccess
+@{
+    ViewData["Title"] = "Index";
+    Layout = "../Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .jstree-node {
+        font-size: 14px !important;
+    }
+
+    .jstree-default .jstree-wholerow-clicked {
+        background: #fff !important;
+    }
+
+    #checkAll {
+        font-size: 20px;
+        max-width: 300px;
+        text-align: center;
+        border-radius: 10px;
+        background-color: lightgoldenrodyellow;
+    }
+</style>
+
+<link href="~/lib/jsTree/themes/default/style.min.css" rel="stylesheet" />
+<script src="~/lib/jsTree/jstree.min.js"></script>
+
+<div id="modal-placeholder"></div>
+<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+    <div class="container-fluid">
+        <ul class="nav nav-sitemap justify-content-center justify-content-xl-end">
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="/Admin/Dashboard/Index"> داشبورد </a>
+            </li>
+            <li class="pr-2 pl-2">
+                <i class="fa fa-angle-left text-white align-middle"></i>
+            </li>
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="/Admin/DynamicAccess/Index">سطح دسترسی پویا</a>
+            </li>
+        </ul>
+        @await Html.PartialAsync("_AdminLogin")
+    </div>
+</nav>
+
+<div class="header bg-gradient-primary pb-4 pt-5 pt-md-8"></div>
+
+<div class="container-fluid mt--7">
+    <div class="row mt-5">
+        <div class="card shadow w-100">
+            <div class="card-header font_Vazir_Medium">
+                <h4 class="mb-1"> تنظیم سطوح دسترسی پویای کاربر «@Model.UserIncludeUserClaims.FirstName @Model.UserIncludeUserClaims.LastName»</h4>
+            </div>
+            <form method="post"
+                  asp-controller="DynamicAccess"
+                  asp-action="Index">
+                <div asp-validation-summary="ModelOnly"></div>
+                <div class="card-body">
+                    <input type="hidden" asp-for="ActionIds" />
+                    <input name="UserId" value="@Model.UserIncludeUserClaims.Id" type="hidden" />
+                    <div>
+                        <div class="form-group row">
+                            <p class="col-md-3" id="checkAll">
+                                <input type="checkbox" id="checkSelectAll" />
+                                انتخاب همه موارد
+                            </p>
+                            <div class="col-md-3">
+                                <input type="text" placeholder="جستجو کنید ..." id="search" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div id="tree">
+                        <ul>
+                            @{int i = 0;}
+                            @foreach (var controller in Model.SecuredControllerActions.Where(x => !x.ControllerName.Contains("Api")).OrderBy(x => x.ControllerDisplayName))
+                            {
+                                <li id=@("node_"+i)>
+                                    @{
+                                        var displayName = controller.ControllerDisplayName;
+                                        if (string.IsNullOrWhiteSpace(displayName))
+                                        {
+                                            displayName = controller.ControllerName;
+                                        }
+                                    }
+                                    @displayName
+                                    <ul class="list-group list-group-flush pr-0">
+                                        @foreach (var action in controller.MvcActions.OrderBy(x => x.ActionDisplayName))
+                                        {
+                                            var isSelected = Model.UserIncludeUserClaims.Claims
+                                                .Any(roleClaim => roleClaim.ClaimType == ConstantPolicies.DynamicPermissionClaimType &&
+                                                                  roleClaim.ClaimValue == action.ActionId);
+                                            var selected = isSelected ? "jstree-clicked" : "";
+                                            var actionDisplayName = action.ActionDisplayName;
+                                            if (string.IsNullOrWhiteSpace(actionDisplayName))
+                                            {
+                                                actionDisplayName = $"{action}::{action.ActionId}";
+                                            }
+
+                                            <li id="@action.ActionId">
+                                                <a href="#" class="@selected"> @actionDisplayName</a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </li>
+                                i++;
+                            }
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer clearfix">
+                    <button type="button" onclick="submitForm()" class="btn btn-primary float-left">
+                        اعمال تغییرات
+                        <span aria-hidden="true" class="fas fa-edit"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $("#tree").jstree({
+            "core": {
+                "themes": {
+                    "icons": false
+                }
+            },
+            "checkbox": {
+                real_checkboxes: true,
+                real_checkboxes_names: function (n) {
+                    var nid = 0;
+                    $(n).each(function (data) {
+                        nid = $(this).attr("nodeid");
+                    });
+                    return (["check_" + nid, nid]);
+                },
+                two_state: true
+            },
+            "search": {
+                "case_insensitive": true,
+                "show_only_matches": true
+            },
+            "plugins": ["themes", "search", "ui", "checkbox"]
+        }).bind('open_node.jstree', function (e, data) {
+            $('#jstree').jstree('check_node', 'li[selected=selected]');
+        })
+    });
+
+    function submitForm() {
+        var checked_ids = [];
+        var selectedElms = $('#tree').jstree("get_selected", true);
+        $.each(selectedElms, function () {
+            if (this.id.indexOf("node") == -1)
+                checked_ids.push(this.id);
+        });
+        $('#ActionIds').val(checked_ids.join(","));
+        $("form").submit();
+    }
+
+    $('#checkSelectAll').change(function () {
+        if ($('#checkSelectAll').is(":checked")) {
+            $("#tree").jstree().check_all(true);
+        }
+        else {
+            $("#tree").jstree().uncheck_all(true);
+        }
+    });
+
+    $('#search').keyup(function () {
+        $('#tree').jstree('search', $(this).val());
+    });
+</script>

@@ -1,0 +1,313 @@
+﻿@model Byte[]
+@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<div id="toolbar">
+    <a class="btn btn-success text-white" asp-action="CreateOrUpdate">
+        <i class="fa fa-plus"></i> | افزودن محصول جدید
+    </a>
+    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('Product', getIdSelections())" disabled>
+        <i class="fa fa-trash"></i> | حذف گروهی
+    </button>
+    <button type="button" id="add" class="btn btn-info" onclick="InsertGroupSpecialDiscount(getIdSelections())" disabled>
+        <i class="fa fa-code"></i> | افزودن گروهی تحفیف ویژه
+    </button>
+</div>
+<table id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-fullscreen="true"
+       data-show-columns="true"
+       data-show-columns-toggle-all="false"
+       data-detail-view="true"
+       data-show-export="true"
+       data-click-to-select="false"
+       data-detail-formatter="detailFormatter"
+       data-minimum-count-columns="2"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-id-field="id"
+       data-page-list="[10, 25, 50, 100, all]"
+       data-show-footer="true"
+       data-side-pagination="server"
+       data-url="/Admin/Product/GetProducts"
+       data-response-handler="responseHandler">
+</table>
+
+<script>
+    var $table = $('#table');
+    var $add = $('#add');
+    var $remove = $('#remove');
+    var selections = [];
+    var SellerProductIds = [];
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.Id;
+        });
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "ردیف" && key != "barcode" && key != "states" && key != "percentDiscount" && key != "imageFiles" && key != "imageName" && key != "stock" && key != "price" && key != "isPresent" && key != "productState" && key != "nameOfCategories" && key != "shortName" && key != "insertTime" && key != "isPrefered" && key != "isComplete" && key != "expirationDate" && key != "برند" && key != "colors" && key != "madeIn" && key != "primaryColor" && key != "ضمانت/گارانتی" && key != "weight" && key != "size" && key != "مواد / ترکیبات" && key != "description") {
+                if (key == "name") key = 'نام محصول';
+                if (key == "displayStates") key = 'وضعیت';
+                if (key == "displayDiscount") key = 'تخفیف';
+                if (key == "numberOfVisit") key = 'بازدید ها';
+                if (key == "numberOfComments") key = 'کامنت ها';
+                if (key == "actionDiscount") key = 'محاسبه تخفیف';
+                if (key == "persianExpirationDate") key = 'تاریخ انقضا';
+                if (key == "persianInsertTime") key = 'تاریخ ساخت/تولید';
+
+                if (key == "numberOfSale") {
+                    key = 'تعداد کل سفارش داده شده از این محصول';
+                    if (value == null || value == '')
+                        value = '0'
+                }
+                if (key == 'nameOfSeller') {
+                    key = 'نام فروشنده محصول';
+                    if (value == null || value == '')
+                        value = '<span class="badge badge-danger">این محصول قروشنده ندارد!</span>'
+                    else
+                        value = '<span class="badge badge-light">' + value + '</span>'
+                }
+                if (key == 'displayPrice') {
+                    key = 'قیمت مصرف کننده';
+                    value = row.displayPrice + ' <small>(ریال)</small> ';
+                }
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+            if (key == "barcode") {
+                key = 'QRCode';
+                if (value != null) {
+                    html.push('<p><b>' + key + ':</b> <img src="data:image/png;base64,' + value + '" height="200" width="200" /></p>')
+                }
+                else {
+                    value = '';
+                    html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+                }
+            }
+            if (key == "imageName") {
+                key = 'تصویر محصول';
+                if (value != null) {
+                    var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/images/' + value;
+                    html.push('<p><b>' + key + ':</b> <img src="' + url + '" height="200" /></p>')
+                }
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        access = access + '<button type="button" class="btn-link text-success" data-toggle="ajax-modal" data-url=@Url.Action("Details", "Product")?productId=' + row.Id + ' title="جزئیات"><i class="fa fa-plus-circle text-yellow"></i></button >';
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Product", "CreateOrUpdate")' == 'True') {
+            access = access + '<a class="text-success" href="/Admin/Product/CreateOrUpdate?productId=' + row.Id + '" title="ویرایش"><i class="fa fa-edit"></i></a>';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Product", "Delete")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Product")/?productId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button >';
+        }
+        return access;
+    }
+
+    function productStateFormatter(value, row, index) {
+        return [
+            '<button type="button" class="btn btn-light btn-sm text-white" data-toggle="ajax-modal" data-url=@Url.Action("RenderProductState", "Product")/?productId=' + row.Id + ' title="وضعیت">' + row.displayStates + '<i class="fas fa-cc-discover"></i></button >'
+
+            //'<a style="display: none;" href="' + row.Id + '" class="id_selected"></a>',
+            //'<select class="btn btn-light btn-sm text-white dropdown-toggle select_ProductState"',
+            //    'type = "button" style = "min-width: -webkit-fill-available;background-color: lightslategray;">',
+            //'<option>' + row.displayStates + '</option>',
+            //    '<option value="1">دمو</option>',
+            //    '<option value="2">در انبار</option>',
+            //    '<option value="3">آماده عرضه</option>',
+            //    '<option value="4">موجود نیست</option>',
+            //    '<option value="5">منقضی شده</option>',
+            //    '<option value="6">مرجوع شده</option>',
+            //    '<option value="7">آسیب دیده</option>',
+            //    '<option value="8">بزودی</option>',
+            //'</select>',
+        ].join('')
+    }
+
+    function discountFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Discount", "RenderDiscount")' == 'True') {
+            access = access + '<button type="button" class="btn btn-light btn-sm text-white" data-toggle="ajax-modal" data-url=@Url.Action("RenderDiscount", "Discount")/?productId=' + row.Id + ' title="تخفیف">' + row.displayDiscount + '<i class="fas fa-cc-discover"></i></button >';
+        }
+        return [
+            access
+        ].join('')
+    }
+
+    function isPreferedFormatter(value, row, index) {
+        var attr = "";
+        if (row.isPrefered == true) {
+            attr = "checked";
+        }
+        return [
+            '<label class="custom-toggle mb-0"> <input type="checkbox" onclick="IsPreferedOrNotPrefered(' + "'" + row.Id + "'" + ')" id="' + row.Id + '" ' + attr + ' /><span class="custom-toggle-slider rounded-circle"></span></label>'
+        ].join('')
+    }
+
+    function stockFormatter(value, row, index) {
+        var _stock = '';
+        if (row.stock <= 1000) {
+            _stock = '<a class="btn btn-danger btn-sm text-white">' + row.stock + '</a >'
+        }
+        else {
+            _stock = '<a class="btn btn-info btn-sm text-white">' + row.stock + '</a >'
+        }
+        return [
+            _stock
+        ].join('')
+    }
+
+    function commentFormatter(value, row, index) {
+        return [
+            '<a href="/Admin/Comment/Index?productId=' + row.Id + '" class="btn btn-primary btn-sm text-white">',
+            row.numberOfComments, ' <i class="fa fa-comments mr-1"></i>',
+            '</a >'
+        ].join('')
+    }
+
+    function priceFormatter(value, row, index) {
+        if (row.actionDiscount == null || row.actionDiscount == "")
+            row.actionDiscount = "۰";
+        if (row.percentDiscount == null || row.percentDiscount == "")
+            row.percentDiscount = "۰";
+        return row.displayPrice + " " + '<small>(' + row.actionDiscount + " - " + row.percentDiscount + " %" +')</small>';
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 650,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    name: 'getSelections'
+                },{
+                    title: 'ردیف',
+                    field: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                },{
+                    title: 'جزئیات اطلاعات محصولات',
+                    colspan: 10,
+                    align: 'center'
+                }],
+                [{
+                    field: 'shortName',
+                    title: 'محصول',
+                    sortable: true,
+                    footerFormatter: totalNameFormatter
+                },{
+                    field: 'nameOfCategories',
+                    title: 'دسته',
+                    sortable: false,
+                    align: 'center'
+                },{
+                    field: 'displayPrice',
+                    title: 'قیمت<small>(ریال)</small>',
+                    sortable: true,
+                    align: 'center',
+                    formatter: priceFormatter
+                },{
+                    field: 'persianInsertTime',
+                    title: 'تاریخ تولید',
+                    sortable: true,
+                    align: 'center'
+                },{
+                    field: 'stock',
+                    title: 'موجودی',
+                    sortable: true,
+                    align: 'center',
+                    formatter: stockFormatter
+                },{
+                    field: 'numberOfComments',
+                    title: 'نظرات',
+                    sortable: false,
+                    align: 'center',
+                    formatter: commentFormatter
+                },{
+                    field: 'isPrefered',
+                    title: '<small>پیشنهادی</small>',
+                    align: 'center',
+                    formatter: isPreferedFormatter
+                },{
+                    field: 'displayDiscount',
+                    title: 'تخفیف',
+                    sortable: false,
+                    align: 'center',
+                    formatter: discountFormatter
+                },{
+                    field: 'displayStates',
+                    title: 'وضعیت',
+                    sortable: false,
+                    align: 'center',
+                    formatter: productStateFormatter
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $add.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+            });
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+        })
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+</script>

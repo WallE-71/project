@@ -1,0 +1,202 @@
+<!-- footer ------------------------------->
+<footer class="footer-main-site">
+    <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
+        <div class="footer-shopping-features">
+            <div class="container-fluid">
+                <div class="col-12">
+                    <div class="item">
+                        <span class="icon-shopping">
+                            <i class="fa fa-paper-plane"></i>
+                        </span>
+                        <span class="title-shopping">تحویل اکسپرس</span>
+                        <span class="desc-shopping">در کمترین زمان دریافت کنید</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon-shopping">
+                            <i class="fa fa-volume-control-phone"></i>
+                        </span>
+                        <span class="title-shopping">پشتیبانی ۲۴ ساعته</span>
+                        <span class="desc-shopping">پشتیبانی هفت روز هفته</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon-shopping">
+                            <i class="fa fa-home"></i>
+                        </span>
+                        <span class="title-shopping">پرداخت در محل</span>
+                        <span class="desc-shopping">هنگام دریافت پرداخت کنید</span>
+                    </div>
+                    <div class="item">
+                        <span class="icon-shopping">
+                            <i class="fa fa-repeat"></i>
+                        </span>
+                        <span class="title-shopping">۷ روز ضمانت بازگشت</span>
+                        <span class="desc-shopping">هفت روز مهلت دارید </span>
+                    </div>
+                    <div class="item">
+                        <span class="icon-shopping">
+                            <i class="fa fa-shield"></i>
+                        </span>
+                        <span class="title-shopping">ضمانت اصل‌بودن کالا</span>
+                        <span class="desc-shopping">تایید اصالت کالا</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="d-block d-xl-block d-lg-block d-md-block d-sm-block order-1">
+        <div class="container-fluid">
+            <div class="col-12">
+                <div class="footer-middlebar">
+                    <div class="col-lg-8 d-block pr">
+                        <div class="footer-links">
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#">
+                                                مجموعه ما
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="menu-item-type-custom">
+                                                <a routerLink="/seller" routerLinkActive="active">
+                                                    همکاری با ما
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    اتاق خبر سایت
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    همکاری با سازمان‌ها
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    فرصت‌های شغلی
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#">
+                                                خدمات مشتریان
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="menu-item-type-custom">
+                                                <a routerLink="/message" routerLinkActive="active">
+                                                    ارتباط با ما
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    پاسخ به پرسش‌های متداول
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    رویه‌های بازگرداندن کالا
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    حریم خصوصی
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-xs-12 pr">
+                                <div class="row">
+                                    <section class="footer-links-col">
+                                        <div class="headline-links">
+                                            <a href="#">
+                                                راهنمای خرید از سایت
+                                            </a>
+                                        </div>
+                                        <ul class="footer-menu-ul">
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    نحوه ثبت سفارش
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    رویه ارسال سفارش
+                                                </a>
+                                            </li>
+                                            <li class="menu-item-type-custom">
+                                                <a href="#">
+                                                    شیوه‌های پرداخت
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 d-block pl">
+                        <div class="shortcode-widget-area">
+                            <form class="form-newsletter" (submit)="NewsLetter()" [formGroup]="form">
+                                <fieldset>
+                                    <span class="form-newsletter-title"> با عضویت در خبرنامه از آخرین اخبار و محصولات
+                                        سایت مطلع شوید...</span>
+                                    <div class="input-group-newsletter">
+                                        <input name="name" formControlName="email"
+                                            placeholder="آدرس ایمیل خود را وارد کنید" type="text"
+                                            class="input-field form-control">
+                                        <button class="btn btn-info btn-secondary">ارسال</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="footer-more-info">
+                        <div class="col-lg-10 pr">
+                            <div class="footer-content d-block">
+                                <div class="text pr-1">
+                                    <h2 class="title">درباره‌ما</h2>
+                                    <p class="desc">
+                                        اسنپ مارکت حاصل همکاری دو شرکت بزرگ اسنپ و‌هایپراستار است تا کالاهای مورد نیاز
+                                        کاربران را در اسرع وقت برای آنها ارسال کند.
+                                        هایپر استار | مایلی
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row col-lg-2 pl">
+                            <ul class="row footer-safety-partner">
+                                <li style="display: flex;">
+                                    <a href="#" class="hover-img-link mt-0">
+                                        <img src="/assets/images/footer/license/L-2.png"
+                                        class="img-fluid img-brand" alt="">
+                                    </a>
+                                    <a href="#" class=" hover-img-link">
+                                        <img src="/assets/images/footer/license/L-1.png"
+                                            class="img-fluid img-brand" alt="">
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="footer-copyright">
+                            <div class="footer-copyright-text">
+                                <p>تمامی مطالب، عکس ها و... متعلق به این سایت فروشگاهی می باشد.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</footer>
+<!-- End footer --------------------------->

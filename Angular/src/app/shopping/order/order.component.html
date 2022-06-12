@@ -1,0 +1,59 @@
+<section class="cart-home">
+    <div class="post-item-cart d-block order-2">
+        <div class="content-page">
+            <div class="cart-collaterals">
+                <div class="totals d-block">
+                    <header class="card-header">
+                        <h6 style="white-space: pre;">سفارشات شما | <small style="white-space: pre;"> تحویل کالا بین ۱ تا ۵ روز کاری </small> | <small style="white-space: pre;"> مهلت تست محصول تا یک هفته پس از خرید </small></h6>
+                    </header>
+                    <div class="container" *ngFor="let order of orders" id="order">
+                        <article class="card">
+                            <div class="card-body">
+                                <span (click)="RemoveOrder(order.id)" class="close card-header btn-link" data-dismiss="modal" aria-hidden="true" id="remove">X</span>
+                                <h6>شماره سفارش: {{order.row}}</h6>
+                                <article class="card">
+                                    <div class="card-body row">
+                                        <div class="col"> <strong>تاریخ خرید:</strong> <br>{{order.persianInsertTime}}
+                                        </div>
+                                        <div class="col"> <strong>خریدار:</strong> <br> {{order.customer}} | <i
+                                                class="fa fa-phone"></i> {{order.phoneNumber}} </div>
+                                                <div class="col"> <strong>مبلغ پرداخت شده:</strong> <br> {{order.amountPaid}} ریال</div>
+                                        <div class="col"> <strong>شماره پیگیری:</strong> <br> {{order.requestPayId}} </div>
+                                    </div>
+                                </article>
+                                <div class="track">
+                                    <div #step class="step {{order.states == 1 ? 'active': ''}}" id="proccess"> <span class="icon"> <i class="fa fa-chevron-left"></i> </span>
+                                        <span class="text">در حال پردازش </span> </div>
+                                    <div #step class="step {{order.states == 2 ? 'active': ''}}" id="confirm"> <span class="icon"> <i class="fa fa-check"></i> </span>
+                                        <span class="text" > تایید شده </span> </div>
+                                    <div #step class="step {{order.states == 3 ? 'active': ''}}" id="delivery"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span
+                                            class="text"> در حال ارسال </span> </div>
+                                    <div #step class="step {{order.states == 4 ? 'active': ''}}" id="ready"> <span class="icon"> <i class="fa fa-user"></i> </span> <span
+                                            class="text">آماده تحویل</span> </div>
+                                </div>
+                                <hr style="border: 1px steelblue dashed;">
+                                <ul class="row">
+                                    <li class="col-md-4" *ngFor="let detail of order.orderDetails">
+                                        <figure class="itemside mb-3" style="border:outset; margin-right: 5px;">
+                                            <div class="aside"><img src="../assets/images/productImages/{{detail.imageName}}"
+                                                    class="img-sm border"></div>
+                                            <figcaption class="info align-self-center" style="margin-right: 5px;">
+                                                <p class="title">{{detail.productName}} - تعداد: {{detail.count}}</p> 
+                                                <span
+                                                    class="text-muted">{{detail.price}} 
+                                                </span>
+                                            </figcaption>
+                                        </figure>
+                                    </li>                                                                   
+                                </ul>
+                                <hr style="border: 1px steelblue dashed;"> 
+                                <a href="/" class="btn btn-warning" data-abc="true"> 
+                                    <i class="fa fa-chevron-left"></i> بازگشت به صفحه اصلی</a>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

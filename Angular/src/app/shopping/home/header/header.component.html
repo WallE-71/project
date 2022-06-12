@@ -1,0 +1,109 @@
+<!-- header ------------------------------->
+<header class="header-main" id="myHeader">
+    <div class="container-main">
+        <div class="d-block">
+            <section class="h-main-row" #firstSection>
+                <div class="col-lg-9 col-xs-12 pr">
+                    <div class="header-right">
+                        <div class="col-lg-3 pr">
+                            <div class="header-logo row text-right">
+                                <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/">
+                                    <h4><label class="label aria-label" style="color: darkred;white-space: pre;">
+                                            فروشگاه </label> <label style="color:darksalmon;">محصولات </label></h4>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-lg-9 pl">
+                            <div class="header-search row text-right">
+                                <div class="header-search-box">
+                                    <form class="form-search" (ngSubmit)="Search()" [formGroup]="form">
+                                        <input formControlName="productName" type="search" class="header-search-input"
+                                            id="search-product"
+                                            placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                                        <div class="action-btns">
+                                            <button class="btn btn-search" type="submit">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-xs-12 pl">
+                    <div class="header-left">
+                        <div class="header-account text-left">
+                            <div class="d-block">
+                                <app-user></app-user>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div>
+                <nav class="header-main-nav" #secondaryHeader id="secondaryHeader">
+                    <div class="d-block">
+                        <div class="align-items-center">
+                            <ul class="menu-ul mega-menu-level-one">
+                                <li id="nav-menu-item" class="menu-item nav-overlay">
+                                    <a type="button" value="Toggle" (click)="Toggle()" #categoriesMenu
+                                        class="current-link-menu categories">
+                                        دسته بندی ها
+                                    </a>
+                                    <div #collapse id="collapse" class="hide row" (mouseenter)="MouseEnter()" (mouseleave)="MouseLeave()">
+                                        <ul *ngFor="let category of categories" class="list-group col-md-3">
+                                            <li class="list-group-item"><a routerLink="/category/{{category?.title}}"
+                                                    routerLinkActive="active">{{category.title}}</a></li>
+                                            <tr *ngIf="category?.subs?.length != 0" class="row category"><small
+                                                    style="margin: 2px 3px;"
+                                                    *ngFor="let sub of category?.subs">{{sub?.title}}</small></tr>
+                                        </ul>
+                                    </div>
+                                </li>
+                                <li id="nav-menu-item" class="menu-item nav-overlay">
+                                    <a class="current-link-menu">
+                                        تخفیف های امروز
+                                    </a>
+                                </li>
+                                <li #closeMenu id="close-menu">
+                                    <a type="button" class="close-header btn-link" #closeHeader>×</a>
+                                </li>
+                                <li #secondarySearch id="secondary-search" (mouseenter)="MouseEnter()" (mouseleave)="MouseLeave()">
+                                    <div class="header-search row text-right">
+                                        <div class="header-search-box">
+                                            <form class="form-search" (ngSubmit)="Search()" [formGroup]="form">
+                                                <input formControlName="productName" type="search" class="header-search-input"
+                                                     id="search-product" #searchProduct 
+                                                    placeholder="نام کالا، برند و یا دسته مورد نظر خود را جستجو کنید…">
+                                                <div class="action-btns">
+                                                    <button class="btn btn-search" type="submit">
+                                                        <i class="fa fa-search"></i>
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </li>
+                                <app-shoppingCart></app-shoppingCart>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <!--    responsive-megamenu-mobile----------------->
+            <nav class="sidebar">
+                <div class="nav-header">
+                    <div class="header-cover"></div>
+                    <div class="logo-wrap">
+                        <a class="logo-icon" href="#"><img alt="logo-icon" src="/assets/images/logo.png" width="40"></a>
+                    </div>
+                </div>
+            </nav>
+            <div class="overlay"></div>
+            <!--    responsive-megamenu-mobile----------------->
+        </div>
+    </div>
+</header>
+<!-- End header --------------------------->
+<div class="nav-categories-overlay" #navOverlay></div>

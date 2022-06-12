@@ -1,0 +1,54 @@
+﻿@model ShoppingStore.Application.ViewModels.Order.OrderViewModel
+@using ShoppingStore.Domain.Entities
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">ویرایش وضعیت سفارش</h3>
+                <button type="button" class="close btn-link" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body clearfix">
+                <form asp-action="ChangeOrderState">
+                    @if (ViewData.ModelState.IsValid.ToString() == "False")
+                    {
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+                    }
+                    <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Processing" class="custom-control-input" id="customRadio1" type="radio">
+                                    <label class="custom-control-label" for="customRadio1">در حال پردازش</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Confirmed" class="custom-control-input" id="customRadio2" type="radio">
+                                    <label class="custom-control-label" for="customRadio2">تایید شده</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Transmission" class="custom-control-input" id="customRadio3" type="radio">
+                                    <label class="custom-control-label" for="customRadio3">در حال ارسال</label>
+                                </div>
+                                <div class="col-md-4 custom-control custom-radio mb-3">
+                                    <input asp-for="OrderState" value="@OrderState.Delivered" class="custom-control-input" id="customRadio4" type="radio">
+                                    <label class="custom-control-label" for="customRadio4">آماده تحویل</label>
+                                </div>                              
+                            </div>
+                            <span asp-validation-for="OrderState" class="text-danger"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">بستن</button>
+                <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                    ذخیره تغییرات
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

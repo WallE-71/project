@@ -1,0 +1,474 @@
+﻿@model ShoppingStore.Application.ViewModels.Seller.SellerViewModel
+@using ShoppingStore.Domain.Common.Extensions;
+@using ShoppingStore.Domain.Entities;
+@{
+    ViewData["Title"] = "RenderSeller";
+    Layout = "../Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/CacheFiles/lib/croppie/croppie.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/CacheFiles/lib/croppie/croppie.min.js" asp-append-version="true"></script>
+
+<link href="~/CacheFiles/lib/treeView/TreeView.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/CacheFiles/lib/treeView/TreeView.js" asp-append-version="true"></script>
+
+<link href="~/CacheFiles/lib/Bootstrap4-tags-inputmaster/css/typeahead.css" asp-append-version="true" rel="stylesheet" />
+<script src="~/CacheFiles/lib/Bootstrap4-tags-inputmaster/js/tagsinput.js" asp-append-version="true"></script>
+<script src="~/CacheFiles/lib/Bootstrap4-tags-inputmaster/js/typeahead.js" asp-append-version="true"></script>
+
+<link href="~/CacheFiles/lib/clockPicker/bootstrap-clockpicker.min.css" rel="stylesheet" asp-append-version="true" />
+<script src="~/CacheFiles/lib/clockPicker/bootstrap-clockpicker.min.js" asp-append-version="true"></script>
+
+<script src="~/CacheFiles/lib/tinymce/tinymce.min.js" asp-append-version="true"></script>
+
+<style>
+    label.cabinet {
+        display: block;
+        cursor: pointer;
+    }
+
+        label.cabinet input.file {
+            position: relative;
+            opacity: 0;
+            -moz-opacity: 0;
+            filter: progid:DXImageTransform.Microsoft.Alpha(opacity=0);
+            margin-top: -30px;
+        }
+
+    #upload-demo {
+        width: 790px;
+        height: 550px;
+        padding-bottom: 25px;
+    }
+
+    .modal-dialog {
+        max-width: 57%;
+        margin: 1.75rem auto;
+    }
+
+    .tt-hint {
+        right: 0px !important;
+    }
+
+    .badge-primary {
+        font-size: 12px !important;
+    }
+</style>
+
+<div id="modal-placeholder"></div>
+<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+    <div class="container-fluid">
+        <!-- Brand -->
+        <ul class="nav nav-sitemap justify-content-center justify-content-xl-end">
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="/Admin/Dashboard"> داشبورد </a>
+            </li>
+            <li class="pr-2 pl-2">
+                <i class="fa fa-angle-left text-white align-middle"></i>
+            </li>
+            @if (Model.Id != 0)
+            {
+                <li>
+                    <a class="h4 mb-0 text-white d-lg-inline-block" asp-action="CreateOrUpdate" asp-route-newsId="@Model.Id">ویرایش فروشنده </a>
+                </li>
+            }
+            else
+            {
+                <li>
+                    <a class="h4 mb-0 text-white d-lg-inline-block" asp-action="CreateOrUpdate">فروشنده جدید</a>
+                </li>
+            }
+        </ul>
+        <!-- User -->
+        @await Html.PartialAsync("_AdminLogin")
+    </div>
+</nav>
+<div class="header bg-gradient-primary pb-4 pt-5 pt-md-8"></div>
+
+<div class="container-fluid mt--7">
+    <div class="row mt-5">
+        <div class="row card shadow w-100">
+            <div class="col-7 col-md-12">
+                <div class="tab-content" id="v-pills-with-icon-tabContent">
+                    <div class="card-header font_Vazir_Medium">
+                        @if (Model.Id != 0)
+                        {
+                            <span>ویرایش فروشنده</span>
+                        }
+                        else
+                        {
+                            <span>افزودن فروشنده </span>
+                        }
+                    </div>
+                    <form method="post" enctype="multipart/form-data"  asp-action="CreateOrUpdate" asp-controller="Seller">
+                        <input name="IsValid" type="hidden" value="@ViewData.ModelState.IsValid.ToString()" />
+                        <input type="hidden" asp-for="Id" />
+                        <div class="card-body">
+                            @if (ViewBag.Alert != null)
+                            {
+                                <div class="col-md-12">
+                                    <div class="alert alert-success mb-4 alert-dismissable">
+                                        @ViewBag.Alert
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="Name" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input asp-for="Name" class="form-control" />
+                                            <span asp-validation-for="Name" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label asp-for="SurName" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input asp-for="SurName" class="form-control" />
+                                            <span asp-validation-for="SurName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="PhonNumber" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input asp-for="PhonNumber" class="form-control" />
+                                            <span asp-validation-for="PhonNumber" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label asp-for="NationalId" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input asp-for="NationalId" class="form-control" />
+                                            <span asp-validation-for="NationalId" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="Email" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input asp-for="Email" class="form-control" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="Brand" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input asp-for="Brand" class="form-control" />
+                                            <span asp-validation-for="Brand" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="WebSite" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input asp-for="WebSite" class="form-control" />
+                                            <span asp-validation-for="WebSite" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-12">
+                                            <label asp-for="ActivityType" class="control-label"></label> / 
+                                            ممکن است هر سه گزینه شامل فعالیت شخص بشود، در این صورت همه موارد انتخاب کنید.
+                                        </div>
+                                        <br/>
+                                        <div class="row">
+                                            <div class="col-md-2 custom-control custom-radio mb-2">
+                                                <input asp-for="ActivityType" value="@ActivityType.Shopman" class="custom-control-input" id="customRadio1" type="radio">
+                                                <label class="custom-control-label" for="customRadio1">فروشنده</label>
+                                            </div>
+                                            <div class="col-md-2 custom-control custom-radio mb-2">
+                                                <input asp-for="ActivityType" value="@ActivityType.Producer" class="custom-control-input" id="customRadio2" type="radio">
+                                                <label class="custom-control-label" for="customRadio2">تولید کننده</label>
+                                            </div>
+                                            <div class="col-md-2 custom-control custom-radio mb-2">
+                                                <input asp-for="ActivityType" value="@ActivityType.Importer" class="custom-control-input" id="customRadio3" type="radio">
+                                                <label class="custom-control-label" for="customRadio3">وارد کننده</label>
+                                            </div>
+                                            <div class="col-md-2 custom-control custom-radio mb-2">
+                                                <input asp-for="ActivityType" value="@ActivityType.All" class="custom-control-input" id="customRadio4" type="radio">
+                                                <label class="custom-control-label" for="customRadio4">همه موارد</label>
+                                            </div>
+                                        </div>
+                                        <span asp-validation-for="ActivityType" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label asp-for="Store" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input asp-for="Store" class="form-control" />
+                                            <span asp-validation-for="Store" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-3">
+                                            <label asp-for="TelNumber" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <input asp-for="TelNumber" class="form-control" />
+                                            <span asp-validation-for="TelNumber" class="text-danger"></span>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label asp-for="PostalCode" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <input asp-for="PostalCode" class="form-control" />
+                                            <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="PersianEstablishmentDate" class="control-label"></label>
+                                        </div>
+                                        <div class="input-group col-md-4">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text cursor-pointer" id="EstablishmentDate">
+                                                    <i class="fa fa-calendar"></i>
+                                                </span>
+                                            </div>
+                                            <input asp-for="PersianEstablishmentDate" class="form-control" id="InputEstablishmentDate" style="direction:ltr" />
+                                        </div>
+                                        <span asp-validation-for="PersianEstablishmentDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="Address" class="control-label"></label>
+                                        </div>
+                                        <div class="col-md-10">
+                                            <input asp-for="Address" class="form-control" />
+                                            <span asp-validation-for="Address" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-2">
+                                            <label asp-for="SampleProduct" class="control-label"></label>
+                                        </div>
+                                        <textarea asp-for="SampleProduct" class="col-md-11" placeholder="اگر تولید کننده هستید نام چند نمونه از محصولات موجود خود را وارد نمایید ..."></textarea>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-md-1">
+                                            <label asp-for="Description" class="control-label"></label>
+                                        </div>
+                                        <textarea id="mytextarea" asp-for="Description"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    @if (Model.Id != 0)
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                                            ذخیره تغییرات
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-sm btn-labeled btn-success mr-1" data-save="modal">
+                                            افزودن اطلاعات
+                                        </button>
+                                    }
+                                    <div class="card-body">
+                                        <div class="card mb-3">
+                                            <div class="col-md-12 border-bottom text-center">
+                                                <p>
+                                                    تصویر فروشنده
+                                                </p>
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="fileinput-new thumbnail" style="height: 150px;">
+                                                        @if (Model.SellerImage != null)
+                                                        {
+                                                            <img src="~/images/@Model.SellerImage" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/UserPic.png" />
+                                                        }
+                                                    </div>
+                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                                                    <div>
+                                                        <span class="btn default btn-file">
+                                                            <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                            <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                            <input type="file" name="SellerImageFile" asp-for="SellerImageFile" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" multiple/>
+                                                        </span>
+                                                        <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                                    </div>
+                                                    <span asp-validation-for="SellerImageFile" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="col-md-12 border-bottom text-center">
+                                                <p>
+                                                    تصویر کارت ملی
+                                                </p>
+                                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                                    <div class="fileinput-new thumbnail" style="height: 150px;">
+                                                        @if (Model.NationalIdImage != null)
+                                                        {
+                                                            <img src="~/images/@Model.NationalIdImage" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/UserPic.png" />
+                                                        }
+                                                    </div>
+                                                    <div class="fileinput-preview fileinput-exists thumbnail" style="height:200px"> </div>
+                                                    <div>
+                                                        <span class="btn default btn-file">
+                                                            <span class="fileinput-new btn btn-success"> انتخاب کنید </span>
+                                                            <span class="fileinput-exists btn btn-default"> تغییر عکس </span>
+                                                            <input type="file" name="NationalIdImageFile" asp-for="NationalIdImageFile" accept=".jpg, .png, .jpeg, .gif, .tif, .tiff, .JPG" multiple/>
+                                                        </span>
+                                                        <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput"> حذف </a>
+                                                    </div>
+                                                    <span asp-validation-for="NationalIdImageFile" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-3">
+                                            <div class="card-header pt-2 pb-2 bg-light">تصویر سند فروشگاه یا شرکت</div>
+                                            <div class="card-body">
+                                                <label class="cabinet center-block">
+                                                    <span>
+                                                        @if (Model.DocumentImage.HasValue())
+                                                        {
+                                                            <img src="~/images/@Model.DocumentImage" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="~/assets/img/R.png" class="gambar img-responsive img-thumbnail" id="item-img-output" height="50" />
+                                                        }
+                                                        <input type="hidden" asp-for="DocumentImageFile" id="base64" />
+                                                        <a class="btn btn-success btn-sm btn-block mt-2 text-white">
+                                                            <span><i class="fa fa-camera"></i></span> انتخاب کنید ...
+                                                        </a>
+                                                    </span>
+                                                    <input type="file" id="file1" class="item-img file-primary center-block" name="file_photo" />
+                                                </label>
+                                                <span asp-validation-for="DocumentImageFile" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cropImagePop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    برش تصویر شاخص
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div id="upload-demo" class="center-block"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">بستن</button>
+                <button type="button" id="cropImageBtn" class="btn btn-sm btn-primary mr-2">برش</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    //tinymce
+    tinymce.init({
+        selector: '#mytextarea',
+        height: 350,
+        plugins: 'print preview fullscreen image link media template codesample table charmap hr help',
+        toolbar1: 'formatselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat |fullscreen',
+        language: 'fa_IR',
+        directionality: 'rtl',
+        images_upload_url: '/Admin/Seller/UploadSellerImage'
+    });
+
+    //clockpicker
+    $('.clockpicker').clockpicker({
+        placement: 'bottom',
+        donetext: 'انتخاب'
+    });
+
+    //DatePicker
+    $("#EstablishmentDate").MdPersianDateTimePicker({
+        targetTextSelector: "#InputEstablishmentDate",
+        placement: 'top',
+    });
+
+    //Crop
+    var $uploadCrop,
+        tempFilename,
+        rawImg,
+        imageId;
+
+    function readFile(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('.upload-demo').addClass('ready');
+                $('#cropImagePop').modal('show');
+                rawImg = e.target.result;
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            swal("Sorry - you're browser doesn't support the FileReader API");
+        }
+    }
+
+    $uploadCrop = $('#upload-demo').croppie({
+        viewport: {
+            width: 740,
+            height: 500,
+        },
+        enforceBoundary: false,
+        enableExif: true
+    });
+
+    $('#cropImagePop').on('shown.bs.modal', function () {
+        $uploadCrop.croppie('bind', {
+            url: rawImg
+        }).then(function () {
+            console.log('jQuery bind complete');
+        });
+    });
+
+    $('.item-img').on('change', function () {
+        imageId = $(this).data('id'); tempFilename = $(this).val();
+        $('#cancelCropBtn').data('id', imageId); readFile(this);
+    });
+
+    $('#cropImageBtn').on('click', function (ev) {
+        $uploadCrop.croppie('result', {
+            type: 'base64',
+            format: 'jpeg',
+            size: { width: 740, height: 500 }
+        }).then(function (resp) {
+            $('#item-img-output').attr('src', resp);
+            $("#base64").val(resp.split(',')[1]);
+            $('#cropImagePop').modal('hide');
+        });
+    });
+</script>

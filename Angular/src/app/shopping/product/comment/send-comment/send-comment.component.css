@@ -1,0 +1,7 @@
+.c-form button:hover{
+    opacity: .8;
+}
+
+.c-form button:active{
+    opacity: .6;
+}

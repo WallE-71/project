@@ -1,0 +1,80 @@
+<div class="divider-space-card d-block">
+    <div class="header-cart-basket">
+        <a class="cart-basket-box">
+            <span class="icon-cart">
+                <i class="mdi mdi-cart"></i>
+            </span>
+            <span class="title-cart">سبد خرید</span>           
+            <span class="count-cart">{{cart.productCount}}</span>
+        </a>
+        <div class="widget-shopping-cart">
+            <p><strong style="margin: 0 5px;">سبد خرید من - </strong> 
+                {{cart.productCount}} کالا        
+                <a mat-flat-button color="warn" 
+                    [swal]="{
+                        title: 'خالی کردن سبد خرید',
+                        text: 'آیا مطمئن هستید؟',
+                        showCancelButton: true
+                    }"
+                    (confirm)="DeleteAll()"
+                    class="mini-cart-item-close"
+                    style="background-color: paleturquoise;">
+                        <i class="fa fa-trash"></i>
+                </a>
+            </p>
+            <div *ngFor="let item of cartItems" class="widget-shopping-cart-content">
+                <ul class="product-list-widget">
+                    <li  class="mini-cart-item">
+                        <div class="mini-cart-item-content">
+                            <a mat-flat-button color="warn" 
+                                [swal]="{
+                                    title: 'حذف از سبد خرید',
+                                    text: 'آیا از حذف این محصول اطمینان دارید ؟',
+                                    showCancelButton: true,
+                                    confirmButtonText: 'بله',
+                                    cancelButtonText: 'خیر'
+                                }"
+                                (confirm)="DeleteItem(item.Id)"
+                                class="mini-cart-item-close">
+                                    <i class="fa fa-trash"></i>
+                            </a>
+                            <a href="#" class="mini-cart-item-image d-block">
+                                <img src="../assets/images/productImages/{{item.image}}">
+                            </a>
+                            <span class="product-name-card">{{item?.productName}}</span>
+                            <br/><br/>
+                            <div class="quantity">
+                                <span class="quantity-Price-amount">
+                                    {{item?.price}}
+                                    <span>تومان</span>
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>          
+                <br/>
+            </div>
+            <br/><br/><br/>
+            <h6 style="background-color: aquamarine; border-radius: 10px; margin: 0 5px;padding: 7px 7px;">حداقل مبلغ ثبت سفارش ۸۰,۰۰۰ تومان است.</h6>
+            <a *ngIf="status == 2 && cart.sumAmount >= 80000" mat-button routerLink="/cart" routerLinkActive="active" style="background-color: springgreen; margin: 2% 23%;" >
+                نهایی کردن خرید 
+                <span style="background-color: snow; padding: 0 5px;">{{cart.sumAmount}}</span>
+            </a>
+            <a *ngIf="status == 2 && cart.sumAmount < 80000 && cart.productCount != 0" mat-button style="background-color: chocolate; margin: 2% 23%; color: ivory;" disabled="true">
+                نهایی کردن خرید 
+                <span style="background-color: chocolate;">{{cart.sumAmount}}</span>
+            </a>
+            <a *ngIf="status == 2 && cart.productCount == 0" mat-button style="background-color:tan; margin: 2% 23%; color: darkred;" disabled="true">
+                سبد خرید شما خالی است!
+            </a>
+            <a *ngIf="status == 1" mat-button routerLink="/address" routerLinkActive="active" style="background-color: springgreen; margin: 2% 23%;" disabled="true" >
+                انتخاب آدرس
+            </a>
+            <a *ngIf="status == 0" mat-button style="background-color: springgreen; margin: 2% 23%;"
+                (click)="RegisterOrLogin()"
+                class="title-account">
+                ورود / عضویت 
+            </a>
+        </div>
+    </div>
+</div>

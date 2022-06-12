@@ -1,0 +1,46 @@
+<div class="account-box">
+    <div *ngIf="user === ''" class="nav-account d-block pl">    
+        <a mat-flat-button color="warn"
+       (click)="RegisterOrLogin()"
+        class="title-account">
+            عضویت / ورود
+        </a>
+    </div>
+
+    <div *ngIf="user !== ''" class="nav-account d-block pl">
+        <span class="title-account" style="color:rgb(30, 19, 83); margin-right: 100px;">{{user}}</span>
+        <div class="dropdown-menu">
+            <ul class="account-uls mb-0">
+                <li class="account-item">
+                    <div class="title-account">{{user}}</div>
+                    <div class="title-account">  اعتبار:  <span style="background-color: darkorange;">{{credit}}</span></div>
+                </li>
+                <li class="account-item">
+                    <a routerLink="/profile" routerLinkActive="active" class="account-link">حساب کاربری</a>
+                </li>
+                <li class="account-item">
+                    <a routerLink="/credit" routerLinkActive="active" class="account-link">افزایش اعتبار</a>
+                </li>
+                <li class="account-item">
+                    <a routerLink="/order" routerLinkActive="active" class="account-link">لیست سفارشات</a>
+                </li>
+                <li class="account-item">
+                    <a (click)="securityService.SignOut(); user = ''"  class="account-link">خروج</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- [swal]="{
+    title: 'برای ثبت سفارش باید وارد شوید',
+    text:'شماره موبایل خود را وارد کنید تا کد تایید برایتان ارسال شود',
+    input: 'text',         
+    inputPlaceholder: 'شماره موبایل*',
+    confirmButtonText: 'ارسال کد تایید',
+    showCloseButton:true,
+    focusConfirm: false,
+    padding:'60px',
+    width:'600px'
+}"  
+(confirm)="AccountUser($event)" -->

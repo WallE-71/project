@@ -1,0 +1,178 @@
+<section class="cart-home">
+    <div class="post-item-cart d-block order-2">
+        <div class="content-page">
+            <mat-stepper [linear]="true" #stepper orientation="horizontal">
+                <mat-step [stepControl]="formGroup1" label="سبد خرید">
+                    <ng-template matStepperIcon="edit">
+                        <mat-icon>insert_drive_file</mat-icon>
+                    </ng-template>
+                    <ng-template matStepperIcon="done">
+                        <mat-icon>done_all</mat-icon>
+                    </ng-template>
+                    <form [formGroup]="formGroup1">
+                        <div class="cart-form">
+                            <form class="c-form">
+                                <table class="table-cart cart table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" class="product-cart-name">
+                                                <p style="margin: 0 26%;">محصول</p>
+                                            </th>
+                                            <th scope="col" class="product-cart-color">
+                                                <p style="margin: 0 17%;">رنگ</p>
+                                            </th>
+                                            <th scope="col" class="product-cart-quantity">
+                                                <p style="margin: 0 17%;">تعداد</p>
+                                            </th>
+                                            <th scope="col" class="product-cart-price">
+                                                <p style="margin: 0 10%;">قیمت</p>
+                                            </th>
+                                            <th scope="col" class="product-cart-Total">
+                                                <p style="margin: 0 10%;">مجموع</p>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let item of cartItems">
+                                            <td scope="row" class="product-cart-name">
+                                                <div class="product-thumbnail-img" style="width: 40%;">
+                                                    <a href="#">
+                                                        <img src="../assets/images/productImages/{{item.image}}"
+                                                            style="width: 100%;margin: 0 40%;">
+                                                    </a>
+                                                </div>
+                                                <div class="product-title">
+                                                    <a href="#" style="text-decoration: none">
+                                                        {{item.productName}}
+                                                    </a>
+                                                </div>
+                                            </td>
+                                            <td class="row">
+                                                <!-- <div class="custom-radio-button" style="margin: 8% 0;">
+                                                    <div *ngFor="let color of item?.colors">
+                                                        <input type="radio">
+                                                        <label>
+                                                            <span style="background-color: {{color}};" class="colors" (click)="setColor(color)"></span>
+                                                        </label>
+                                                    </div>
+                                                </div> -->
+
+                                                <div class="custom-radio-button" style="margin: 8% 0;">
+                                                    <mat-radio-group [(ngModel)]="selectedColor" [ngModelOptions]="{standalone: true}" name="selectedColor" required >
+                                                        <mat-radio-button *ngFor="let color of item?.colors" [value]="color"
+                                                            style="margin-right: 3%;" 
+                                                            (change)="SaveColor(item.productId, $event)" [checked]="true">
+                                                            <input type="radio">
+                                                            <label for="color-{{color}}">
+                                                                <span style="background-color: {{color}};" class="colors"></span>
+                                                            </label>
+                                                            <!-- {{item}} -->
+                                                        </mat-radio-button>
+                                                    </mat-radio-group>
+                                                </div>
+                                            </td>
+                                            <td class="product-cart-quantity">
+                                                <div class="required-number before">
+                                                    <div class="quantity">
+                                                        <input type="number" min="1" max="100" step="1"
+                                                            value="{{item.count}}" id="{{item.Id}}">
+                                                        <div class="quantity-nav">
+                                                            <div class="quantity-button quantity-up"
+                                                                (click)="AddCount(item.Id)">+
+                                                            </div>
+                                                            <div class="quantity-button quantity-down"
+                                                                (click)="LowCount(item.Id)">-
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="product-cart-price">
+                                                <span class="amount">
+                                                    {{item.price}}
+                                                    <span>تومان</span>
+                                                </span>
+                                            </td>
+                                            <td class="product-cart-Total">
+                                                <span class="amount">
+                                                    {{item.price * item.count}}
+                                                    <span>تومان</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </form>                              
+                        </div>
+                        <li class="cart-subtotal" style="margin: 50px 50px 0 0;">
+                            <span class="amount"><strong style="white-space: pre;"> قیمت کل محصولات سبد
+                                </strong></span><br />
+                            <span><strong style="white-space: pre;"> {{cart.sumAmount}} تومان </strong> </span>
+                        </li>
+                        <div style="float: left;">
+                            <button mat-button matStepperNext>تایید</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="formGroup2" label="روش حمل و نقل کالا">
+                    <form [formGroup]="formGroup2">
+                        <div class="cart-form" style="margin-top:50px">
+                            <div class="c-form">
+                                <table class="table-cart cart table table-borderless" style="margin-right:10px">
+                                    <ul>
+                                        <li class="shipping-totals">
+                                            <span class="amount">روش حمل و نقل کالا را تعیین کنید:</span><br />
+                                            <div class="shipping-totals-item" style="margin: 2% 0;display:initial;">
+                                                <div class="container">
+                                                    <div class="row">
+                                                        <div class="custom-radio-button">
+                                                            <mat-radio-group [(ngModel)]="transport" [ngModelOptions]="{standalone: true}"  aria-label="Select an option" required >
+                                                                <mat-radio-button value="1" style="margin-right: 3%;">حمل و نقل رایگان</mat-radio-button>
+                                                                <mat-radio-button value="2" style="margin-right: 3%;">عادی</mat-radio-button>
+                                                                <mat-radio-button value="3" style="margin-right: 3%;">استانی</mat-radio-button>
+                                                                <mat-radio-button value="4" style="margin-right: 3%;">ویژه</mat-radio-button>
+                                                            </mat-radio-group>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="discount-code">
+                                            <div class="col-md-12">
+                                                <input matInput class="form-control" type="text"
+                                                    style="width: 30%;background-color: snow;" placeholder="اگر كد تخفیف دارید وارد نمایید:"
+                                                    formControlName="discountCode" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </table>
+                            </div>
+                        </div>
+                        <div>
+                            <button mat-button matStepperNext style="float: left;">درگاه بانکی</button>
+                            <button mat-button matStepperPrevious style="float: left;">سبد خرید</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step [stepControl]="formGroup3" label="پرداخت نهایی">
+                    <div class="form-card row" style="margin-top:20px">
+                        <h4 class="Total-cart-total">مجموع کل سبد خرید</h4>
+                        <h6>با احتساب ۹٪ مالیات و اعمال تخفیف محصول یا کد تخفیف شما</h6>
+                    </div>
+                    <ul>
+                        <li class="order-total" style="float: right;margin: 20px 100px 0 0;">
+                            <span>
+                                <h6> {{cart.sumAmount}} تومان</h6>
+                            </span>
+                        </li>
+                    </ul>
+                    <app-pay-ways></app-pay-ways>
+                    <div>
+                        <button mat-button (click)="RequestPay()" style="float: left;">تسویه حساب</button>
+                        <button mat-button matStepperPrevious style="float: left;">حمل و نقل</button>
+                    </div>
+                </mat-step>
+            </mat-stepper>
+        </div>
+    </div>
+</section>

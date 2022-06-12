@@ -1,0 +1,179 @@
+﻿@model ShoppingStore.Application.ViewModels.Comments.CommentViewModel
+@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<div id="toolbar">
+    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('Comment', getIdSelections())" disabled>
+        <i class="fa fa-trash"></i> | حذف گروهی
+    </button>
+</div>
+<table id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-fullscreen="true"
+       data-show-columns="true"
+       data-detail-view="true"
+       data-show-export="true"
+       data-click-to-select="false"
+       data-detail-formatter="detailFormatter"
+       data-minimum-count-columns="2"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-id-field="id"
+       data-page-list="[10, 25, 50, 100, all]"
+       data-show-footer="true"
+       data-side-pagination="server"
+       data-url="/Admin/Comment/GetComments?productId=@Model.ProductId&isConfirm=@Model.IsComplete"
+       data-response-handler="responseHandler">
+</table>
+
+<script>
+    var $table = $('#table');
+    var $remove = $('#remove');
+    var selections = []
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.Id;
+        });
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "ردیف" && key != "isComplete" && key != "insertTime" && key != "subComments" && key != "productId" && key != "parentCommentId") {
+                if (key == "email") key = 'ایمیل';
+                if (key == "productName") key = 'محصول';
+                if (key == "description") key = 'متن کامنت';
+                if (key == "numberOfDisLike") key = 'لایک ها';
+                if (key == "name") key = 'نام نویسنده کامنت';
+                if (key == "numberOfLike") key = 'دیس لایک ها';
+                if (key == "persianInsertTime") key = 'تاریخ ارسال';
+                if (key == "parentComment") {
+                    if (value == null)
+                        value = '';
+                    key = 'در پاسخ به نویسنده';
+                }
+
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin", "Comment", "Delete")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "Comment")/?commentId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button>';
+        }
+        return access;
+    }
+
+    function isConfirmFormatter(value, row, index) {
+        var attr = "";
+        if (row.isComplete == true) {
+            attr = "checked";
+        }
+        return [
+            '<label class="custom-toggle mb-0"> <input type="checkbox" onclick="ConfirmOrInConfirm(' + "'" + row.Id + "'" + ')" id="' + row.Id + '" ' + attr + ' /><span class="custom-toggle-slider rounded-circle"></span></label>'
+        ].join('')
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 600,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    title: 'ردیف',
+                    field: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                }, {
+                    title: 'جزئیات اطلاعات دیدگاه ها',
+                    colspan: 6,
+                    align: 'center'
+                }],
+                [{
+                    field: 'name',
+                    title: 'نویسنده',
+                    sortable: true,
+                    footerFormatter: totalNameFormatter,
+                },{
+                    field: 'email',
+                    title: 'ایمیل',
+                    sortable: true,
+                },{
+                    field: 'productName',
+                    title: 'محصول',
+                    sortable: false,
+                },{
+                    field: 'persianInsertTime',
+                    title: 'تاریخ ارسال',
+                    align: 'center',
+                    sortable: true,
+                },{
+                    field: '',
+                    title: 'تایید',
+                    align: 'center',
+                    sortable: true,
+                    formatter: isConfirmFormatter
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    events: window.operateEvents,
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+        })
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+</script>

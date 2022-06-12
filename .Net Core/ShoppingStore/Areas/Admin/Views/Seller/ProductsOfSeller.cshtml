@@ -1,0 +1,320 @@
+﻿@model ShoppingStore.Application.ViewModels.Product.ProductViewModel
+@{
+    ViewData["Title"] = "ProductsOfSeller";
+    Layout = "../Shared/_AdminLayout.cshtml";
+}
+
+<div id="modal-placeholder"></div>
+<nav class="navbar navbar-top navbar-expand-md navbar-dark" id="navbar-main">
+    <div class="container-fluid">
+        <ul class="nav nav-sitemap justify-content-center justify-content-xl-end">
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="/Admin/Dashboard/Index"> داشبورد </a>
+            </li>
+            <li class="pr-2 pl-2">
+                <i class="fa fa-angle-left text-white align-middle"></i>
+            </li>
+            <li>
+                <a class="h4 mb-0 text-white d-lg-inline-block" href="/Admin/Seller/ProductsOfSeller?sellerId=@Model.SellerId&isSeller=false">نمایش محصولات </a>
+            </li>
+        </ul>
+        @await Html.PartialAsync("_AdminLogin")
+    </div>
+</nav>
+<div class="header bg-gradient-primary pb-4 pt-5 pt-md-8"></div>
+<div class="container-fluid mt--7">
+    <div class="row mt-5">
+        <div class="card shadow w-100">
+            @if (Model.IsSeller == false)
+            {
+                <div class="card-header font_Vazir_Medium">
+                    افزودن محصولات
+                </div>
+            }
+            else
+            {
+                <div class="card-header font_Vazir_Medium">
+                    محصولات فروشنده
+                </div>
+            }
+            <div class="card-body">
+                @if (ViewBag.Alert != null)
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-danger mb-4 alert-dismissable">
+                            @ViewBag.Alert
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                }
+                @if (ViewBag.Success != null)
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-success mb-4 alert-dismissable">
+                            @ViewBag.Success
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                }
+                <form asp-area="Admin" asp-controller="Product">
+                    <div id="toolbar">
+                        @if (Model.IsSeller == false)
+                        {
+                            <button type="button" id="add" class="btn btn-info" onclick="AddProductToStore('@Model.SellerId', getIdSelections())" disabled>
+                                <i class="fab fa-plus-square"></i> | افزودن گروهی محصولات به فروشنده
+                            </button>
+                            <button type="button" class="btn btn-outline-light" onclick="ShowProductSeller('@Model.SellerId')" id="@Model.SellerId">
+                                <i class="fab fa-adversal"></i> | مشاهده محصولات فروشنده
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroupProduct('Seller', getIdSelections())" disabled>
+                                <i class="fa fa-trash"></i> | حذف از فروشگاه گروهی
+                            </button>
+                            <button type="button" class="btn btn-outline-info text-gray-dark" onclick="ShowAllProduct('@Model.SellerId')" id="@Model.SellerId">
+                                <i class="fas fa-store-alt text-gray-dark"></i> | مشاهده محصولات باقی مانده
+                            </button>
+                        }
+                    </div>
+                    <table id="table"
+                           data-toolbar="#toolbar"
+                           data-search="true"
+                           data-show-refresh="true"
+                           data-show-toggle="true"
+                           data-show-fullscreen="true"
+                           data-show-columns="true"
+                           data-show-columns-toggle-all="false"
+                           data-detail-view="true"
+                           data-show-export="true"
+                           data-click-to-select="false"
+                           data-detail-formatter="detailFormatter"
+                           data-minimum-count-columns="2"
+                           data-show-pagination-switch="true"
+                           data-pagination="true"
+                           data-id-field="id"
+                           data-page-list="[10, 25, 50, 100, all]"
+                           data-show-footer="true"
+                           data-side-pagination="server"
+                           data-url="/Admin/Seller/GetProductsForSeller?sellerId=@Model.SellerId&isSeller=@Model.IsSeller"
+                           data-response-handler="responseHandler">
+                    </table>
+
+                    <script>
+    var $table = $('#table');
+    var $add = $('#add');
+    var $remove = $('#remove');
+    var selections = [];
+    var SellerProductIds = [];
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return sellerProductIds = row.Id;
+        })
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "ردیف" && key != "barcode" && key != "states" && key != "percentDiscount" &&  key != "imageFiles" && key != "imageName" && key != "stock" && key != "price" && key != "isPresent" && key != "productState" && key != "nameOfCategories" && key != "shortName" && key != "insertTime" && key != "isPrefered" && key != "isComplete" && key != "expirationDate") {
+                if (key == "weight") key = 'وزن';
+                if (key == "madeIn") key = 'ساخت';
+                if (key == "name") key = 'نام محصول';
+                if (key == "nameOfBrand") key = 'برند';
+                if (key == "size") key = 'ابعاد/اندازه';
+                if (key == "displayStates") key = 'وضعیت';
+                if (key == "displayDiscount") key = 'تخفیف';
+                if (key == "numberOfVisit") key = 'بازدید ها';
+                if (key == "numberOfComments") key = 'کامنت ها';
+                if (key == "actionDiscount") key = 'محاسبه تخفیف';
+                if (key == "persianExpirationDate") key = 'تاریخ انقضا';
+                if (key == "persianInsertTime") key = 'تاریخ ساخت/تولید';
+
+                if (key == "numberOfSale") {
+                    key = 'تعداد کل سفارش داده شده از این محصول';
+                    if (value == null || value == '')
+                        value = '0'
+                }
+                if (key == "color") {
+                    key = 'رنگ اصلی';
+                    if (value == null || value == '')
+                        value = 'بی رنگ'
+                }
+                if (key == "description") {
+                    key = 'توضیحات';
+                    if (value == null || value == '')
+                        value = 'ندارد'
+                }
+                if (key == 'guarantee') {
+                    key = 'ضمانت/گارانتی';
+                    if (value == null || value == '')
+                        value = 'ندارد'
+                }
+                if (key == 'nameOfSeller') {
+                    key = 'نام فروشنده محصول';
+                    if (value == null || value == '')
+                        value = '<span class="badge badge-danger">این محصول قروشنده ندارد!</span>'
+                    else
+                        value = '<span class="badge badge-light">' + value + '</span>'
+                }
+                if (key == 'displayPrice') {
+                    key = 'قیمت مصرف کننده';
+                    value = row.displayPrice + ' <small>(ریال)</small> ';
+                }
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+            if (key == "barcode") {
+                key = 'QRCode';
+                if (value != null) {
+                    html.push('<p><b>' + key + ':</b> <img src="data:image/png;base64,' + value + '" height="200" width="200" /></p>')
+                }
+                else {
+                    value = '';
+                    html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+                }
+            }
+            if (key == "imageName") {
+                key = 'تصویر محصول';
+                if (value != null) {
+                    var url = '@string.Format("{0}://{1}", Context.Request.Scheme, Context.Request.Host)' + '/images/' + value;
+                    html.push('<p><b>' + key + ':</b> <img src="' + url + '" height="200" /></p>')
+                }
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        if ('@Model.IsSeller' == 'False') {
+            access = access + '<button type="button" class="btn-link text-info" onclick="AddProductToStore(' + "'" + row.Id + "'" + ",'" + @Model.SellerId + "'" + ')" id="' + row.Id + '" title="افزودن به فروشگاه"><i class="fa fa-store"></i></button >';
+        }
+        if ('@Model.IsSeller' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("DeleteOfStore", "Seller")?sellerId=' + @Model.SellerId + '&productId=' + row.Id + ' title="حذف از فروشگاه"><i class="fa fa-trash"></i></button >';
+        }
+        return access;
+    }
+
+    function stockFormatter(value, row, index) {
+        return [
+            '<a class="btn btn-danger btn-sm text-white">',
+            row.stock,
+            '</a >'
+        ].join('')
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 600,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    name: 'getSelections'
+                },{
+                    title: 'ردیف',
+                    field: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                },{
+                    title: 'جزئیات اطلاعات محصولات',
+                    colspan: 6,
+                    align: 'center'
+                }],
+                [{
+                    field: 'name',
+                    title: 'محصول',
+                    sortable: true,
+                    footerFormatter: totalNameFormatter
+                },{
+                    field: 'nameOfCategories',
+                    title: 'دسته',
+                    sortable: false,
+                    align: 'center'
+                },{
+                    field: 'displayPrice',
+                    title: 'قیمت<small>(تومان)</small>',
+                    sortable: true,
+                    align: 'center',
+                },{
+                    field: 'stock',
+                    title: 'موجودی',
+                    sortable: true,
+                    align: 'center',
+                    formatter: stockFormatter
+                },{
+                    field: 'persianInsertTime',
+                    title: 'تاریخ تولید',
+                    sortable: true,
+                    align: 'center'
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $add.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+            });
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+            });
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+                    </script>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

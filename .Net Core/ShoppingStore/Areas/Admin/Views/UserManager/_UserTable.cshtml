@@ -1,0 +1,221 @@
+﻿@using ShoppingStore.Infrastructure.Contracts
+@inject ISecurityTrimmingService securityTrimmingService
+
+<div id="toolbar">
+    <button type="button" class="btn btn-success" data-toggle="ajax-modal" data-url="@Url.Action("RenderUser","UserManager")">
+        <i class="fa fa-plus"></i> | افزودن کاربر جدید
+    </button>
+
+    <button type="button" id="remove" class="btn btn-danger" onclick="DeleteGroup('UserManager', getIdSelections())" disabled>
+        <i class="fa fa-trash"></i> | حذف گروهی
+    </button>
+</div>
+
+<table id="table"
+       data-toolbar="#toolbar"
+       data-search="true"
+       data-show-refresh="true"
+       data-show-toggle="true"
+       data-show-fullscreen="true"
+       data-show-columns="true"
+       data-detail-view="true"
+       data-show-export="true"
+       data-click-to-select="false"
+       data-detail-formatter="detailFormatter"
+       data-minimum-count-columns="2"
+       data-show-pagination-switch="true"
+       data-pagination="true"
+       data-id-field="id"
+       data-page-list="[10, 25, 50, 100, all]"
+       data-show-footer="true"
+       data-side-pagination="server"
+       data-url="/Admin/UserManager/GetUsers"
+       data-response-handler="responseHandler">
+</table>
+
+<script>
+    var $table = $('#table');
+    var $remove = $('#remove');
+    var selections = []
+
+    function get_query_params(p) {
+        return {
+            extraParam: 'abc',
+            search: p.title,
+            sort: p.sort,
+            order: p.order,
+            limit: p.limit,
+            offset: p.offset
+        }
+    }
+
+    function responseHandler(res) {
+        $.each(res.rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1
+        })
+        return res
+    }
+
+    function getIdSelections() {
+        return $.map($table.bootstrapTable('getSelections'), function (row) {
+            return row.Id;
+        });
+    }
+
+    function detailFormatter(index, row) {
+        var html = []
+        $.each(row, function (key, value) {
+            if (key != "state" && key != "Id" && key != "id" && key != "ردیف" && key != "cityName" && key != "provinceName" && key != "image" && key != "isActive" && key != "password" && key != "rolesId") {
+                if (key == "email") key = 'ایمیل';
+                if (key == "credit") key = 'اعتبار';
+                if (key == "firstName") key = 'نام';
+                if (key == "genderName") key = 'جنسیت';
+                if (key == "roleName") key = 'نقش اصلی';
+                if (key == "userName") key = 'نام کاربری';
+                if (key == "birthDate") key = 'تاریخ تولد';
+                if (key == "lastName") key = 'نام خانوادگی';
+                if (key == "phoneNumber") key = 'شماره تماس';
+                if (key == "persianInsertTime") key = 'تاریخ عضویت';
+
+                if (key == "bio") {
+                    key = 'معرفی';
+                    if (value == null)
+                        value = '';
+                }
+                if (key == "address") {
+                    key = 'آدرس';
+                    if (row.cityName != null && row.provinceName != null)
+                        value = "استان: " + row.provinceName + ", شهر: " + row.cityName + ", آدرس: " + row.address;
+                    else
+                        value = row.address;
+                }
+                if (key == "rolesName") {
+                    key = 'نقش ها';
+                    value = row.rolesName[row.rolesName.length - 1] +
+                        ((row.rolesName[row.rolesName.length - 2] != undefined ? ' - ' + row.rolesName[row.rolesName.length - 2] : '') +
+                        (row.rolesName[row.rolesName.length - 3] != undefined ? ' - ' + row.rolesName[row.rolesName.length - 3] : '') +
+                        (row.rolesName[row.rolesName.length - 4] != undefined ? ' - ' + row.rolesName[row.rolesName.length - 4] : ''));
+                }
+
+                html.push('<p><b>' + key + ':</b> ' + value + '</p>')
+            }
+        })
+        return html.join('')
+    }
+
+    function operateFormatter(value, row, index) {
+        var access = "";
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin","UserManager","Details")' == 'True') {
+            access = access + '<a class="btn btn btn-primary btn-sm" href=@Url.Action("Details","UserManager")?userId=' + row.Id + ' title="مدیریت"><i class="fa fa-user"></i> | مدیریت </a>';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin","DynamicAccess","Index")' == 'True') {
+            access = access + '<a class="btn btn btn-success mr-1 btn-sm" href=@Url.Action("Index","DynamicAccess")?userId=' + row.Id + '> سطح دسترسی </a>';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin","UserManager","RenderUser")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-success" data-toggle="ajax-modal" data-url=@Url.Action("RenderUser", "UserManager")?userId=' + row.Id + ' title="ویرایش"><i class="fa fa-edit"></i></button >';
+        }
+        if ('@securityTrimmingService.CanUserAccess(User,"Admin","UserManager","Delete")' == 'True') {
+            access = access + '<button type="button" class="btn-link text-danger" data-toggle="ajax-modal" data-url=@Url.Action("Delete", "UserManager")/?userId=' + row.Id + ' title="حذف"><i class="fa fa-trash"></i></button >';
+        }
+        return access;
+    }
+
+    function isActiveFormatter(value, row, index) {
+        var spanClass = "badge badge-danger";
+        var IsActive = "غیرفعال";
+        if (!row.IsActive) {
+            IsActive = "فعال";
+            spanClass = "badge badge-success";
+        }
+        return [
+            '<span class="' + spanClass + '">' + IsActive + '</span>'
+        ].join('')
+    }
+
+    function totalTextFormatter(data) {
+        return 'تعداد'
+    }
+
+    function totalNameFormatter(data) {
+        return data.length
+    }
+
+    function initTable() {
+        $table.bootstrapTable('destroy').bootstrapTable({
+            height: 600,
+            innerWidth: 1000,
+            locale: 'fa-IR',
+            columns: [
+                [{
+                    field: 'state',
+                    checkbox: true,
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                }, {
+                    title: 'ردیف',
+                    field: 'ردیف',
+                    rowspan: 2,
+                    align: 'center',
+                    valign: 'middle',
+                    footerFormatter: totalTextFormatter
+                }, {
+                    title: 'جزئیات اطلاعات کاربران',
+                    colspan: 7,
+                    align: 'center'
+                }],
+                [{
+                    field: 'firstName',
+                    title: 'نام',
+                    sortable: true,
+                    align: 'center',
+                    footerFormatter: totalNameFormatter
+                },{
+                    field: 'lastName',
+                    title: 'نام خانوادگی',
+                    sortable: true,
+                    align: 'center'
+                },{
+                    field: 'email',
+                    title: 'ایمیل',
+                    sortable: true,
+                    align: 'center'
+                },{
+                    field: 'userName',
+                    title: 'نام کاربری',
+                    sortable: true,
+                    align: 'center'
+                },{
+                    field: 'persianInsertTime',
+                    title: 'تاریخ عضویت',
+                    sortable: true,
+                    align: 'center'
+                },{
+                    field: 'isActive',
+                    title: 'وضعیت',
+                    sortable: true,
+                    align: 'center',
+                    formatter: isActiveFormatter
+                },{
+                    field: 'operate',
+                    title: 'عملیات',
+                    align: 'center',
+                    events: window.operateEvents,
+                    formatter: operateFormatter
+                }]
+            ]
+        })
+
+        $table.on('check.bs.table uncheck.bs.table ' +
+            'check-all.bs.table uncheck-all.bs.table',
+            function () {
+                $remove.prop('disabled', !$table.bootstrapTable('getSelections').length)
+                selections = getIdSelections()
+            })
+    }
+
+    $(function () {
+        initTable()
+        $('#locale').change(initTable)
+    })
+</script>
